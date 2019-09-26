@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">FinanceAnalytix</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Finance analytix</string>
+    <string name="nav_header_subtitle">loko.wc@gmail.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Настройки</string>
+
+    <string name="menu_home">Главная</string>
+    <string name="menu_category_list">Категории</string>
+    <string name="menu_operation_list">Журнал операций</string>
+    <string name="menu_tools">Настройки</string>
+    <string name="menu_share">Поделиться</string>
+    <string name="menu_send">Ввести операцию</string>
+    <string name="category_rus">Категория</string>
+    <string name="category_color">Цвет категории</string>
+    <string name="delete_record">Удалить</string>
+    <string name="direction_minus">-</string>
+    <string name="direction_plus">+</string>
+    <string name="main_information">Сводка</string>
+    <string name="operation_date">дата операции</string>
+</resources>

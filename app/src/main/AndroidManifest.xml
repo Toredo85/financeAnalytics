@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.Bogatnov.financeanalytix">
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name=".CategoryActivity"
+            android:label="@string/category_rus"></activity>
+        <activity android:name=".CategoryList"
+            android:label="@string/menu_category_list"
+            android:theme="@style/AppTheme.NoActionBar"
+            />
+        <activity android:name=".EnterOperationActivity"
+            android:label="@string/menu_send"/>
+        <activity android:name=".OperationListActivity"
+            android:label="@string/menu_operation_list"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/main_information"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>
