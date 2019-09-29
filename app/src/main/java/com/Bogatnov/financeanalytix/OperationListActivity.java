@@ -18,7 +18,6 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.cursoradapter.widget.SimpleCursorAdapter;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.FragmentActivity;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.Loader;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -55,7 +54,7 @@ public class OperationListActivity extends AppCompatActivity implements LoaderMa
 
         // формируем столбцы сопоставления
         String[] from = new String[]{"_id", "direction", "categoryname", "date", "amount"};
-        int[] to = new int[]{R.id.id, R.id.direction, R.id.category, R.id.date, R.id.amount};
+        int[] to = new int[]{R.id._id, R.id.direction, R.id.category, R.id.date, R.id.amount};
 
         // создаем адаптер и настраиваем список
         scAdapter = new SimpleCursorAdapter(this, R.layout.operatoin_row, null, from, to, 0);

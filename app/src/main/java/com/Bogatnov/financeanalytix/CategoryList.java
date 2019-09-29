@@ -3,39 +3,71 @@ package com.Bogatnov.financeanalytix;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.view.ContextMenu;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ListView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
-import androidx.cursoradapter.widget.SimpleCursorAdapter;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.loader.app.LoaderManager;
-import androidx.loader.content.Loader;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.Bogatnov.financeanalytix.Adapters.CategoryAdapter;
+import com.Bogatnov.financeanalytix.Entity.Category;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 
-public class CategoryList extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>, View.OnClickListener, NavigationView.OnNavigationItemSelectedListener{
+import java.util.ArrayList;
+import java.util.Collection;
 
-    private static final int CM_DELETE_ID = 1;
+public class CategoryList extends AppCompatActivity implements View.OnClickListener, NavigationView.OnNavigationItemSelectedListener{
+
     DBActions db;
-    SimpleCursorAdapter scAdapter;
-    TextView nameCategory;
-    TextView idCategory;
     Intent thisIntent;
+    private static final int CM_DELETE_ID = 1;
+    private RecyclerView categoriesRecyclerView;
+    private CategoryAdapter categoryAdapter;
+
+    private void initRecyclerView() {
+
+        // остальной код выше не изменился
+        categoriesRecyclerView = findViewById(R.id.category_recycler_view);
+        categoriesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        CategoryAdapter.OnCategoryClickListener onCategoryClickListener = new CategoryAdapter.OnCategoryClickListener() {
+            @Override
+            public void onCategoryClick(Category category) {
+                thisIntent = getIntent();
+                if (thisIntent.hasExtra("Select_option")) {
+                  boolean selection = thisIntent.getBooleanExtra("Select_option", false);
+                  if (selection) {
+                      Intent intent = new Intent();
+                      intent.putExtra("_id", category.getId());
+                      intent.putExtra("name", category.getName());
+
+                      setResult(RESULT_OK, intent);
+                      finish();
+                  }
+                }
+            }
+        };
+        categoryAdapter = new CategoryAdapter(onCategoryClickListener);
+        categoriesRecyclerView.setAdapter(categoryAdapter);
+        registerForContextMenu(categoriesRecyclerView);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        db = new DBActions(this);
+        db.open();
+
         thisIntent = getIntent();
         if (thisIntent.hasExtra("Select_option")) {
             setContentView(R.layout.app_bar_category_list);
@@ -53,48 +85,33 @@ public class CategoryList extends AppCompatActivity implements LoaderManager.Loa
             navigationView.setNavigationItemSelectedListener(this);
         }
 
-        final ListView categoryList;
         FloatingActionButton fabButton = (FloatingActionButton) findViewById(R.id.fab);
         fabButton.setOnClickListener(this);
-        // открываем подключение к БД
-        db = new DBActions(this);
-        db.open();
 
-        // формируем столбцы сопоставления
-        String[] from = new String[]{"_id", "name", "color"};
-        int[] to = new int[]{R.id.id, R.id.name, R.id.color};
+        initRecyclerView();
+        loadCategories();
+    }
 
-        // создаем адаптер и настраиваем список
-        scAdapter = new SimpleCursorAdapter(this, R.layout.category, null, from, to, 0);
-        categoryList = (ListView) findViewById(R.id.category_list);
-        nameCategory = (TextView) findViewById(R.id.name);
-        idCategory = (TextView) findViewById(R.id.id);
+    private void loadCategories() {
+        Collection<Category> categories = getCategories();
+        categoryAdapter.setItems(categories);
+    }
 
-        categoryList.setAdapter(scAdapter);
+    private Collection<Category> getCategories() {
 
-        // добавляем контекстное меню к списку
-        registerForContextMenu(categoryList);
+        Cursor cursor = db.getAllDataCategories();
+        ArrayList categoriesArray = new ArrayList<Category>();
+        if(cursor.moveToFirst()) {
+            do {
+                int id = cursor.getInt(cursor.getColumnIndex("_id"));
+                String name = cursor.getString(cursor.getColumnIndex("name"));
+                String color = cursor.getString(cursor.getColumnIndex("color"));
 
-        // создаем лоадер для чтения данных
-        LoaderManager.getInstance(this).initLoader(0,null,this);
-        categoryList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
-                thisIntent = getIntent();
-                if (thisIntent.hasExtra("Select_option")) {
-                    boolean selection = thisIntent.getBooleanExtra("Select_option", false);
-                    if (selection) {
-                        Intent intent = new Intent();
-                        Cursor client = (Cursor) parent.getItemAtPosition(position);
-                        intent.putExtra("_id", client.getInt(0));
-                        intent.putExtra("name", client.getString(1));
+                categoriesArray.add(new Category(id, name, color));
 
-                        setResult(RESULT_OK, intent);
-                        finish();
-                    }
-                }
-            }
-        });
+            } while (cursor.moveToNext());
+        }
+        return categoriesArray;
     }
 
     public void onClick(View view) {
@@ -105,27 +122,26 @@ public class CategoryList extends AppCompatActivity implements LoaderManager.Loa
                 // добавляем запись
                 Intent intentAdd = new Intent(this, CategoryActivity.class);
                 startActivity(intentAdd);
-                // получаем новый курсор с данными
-                LoaderManager.getInstance(this).getLoader(0).forceLoad();
         }
-    }
-    public void onCreateContextMenu(ContextMenu menu, View v,
-                                    ContextMenu.ContextMenuInfo menuInfo) {
-        super.onCreateContextMenu(menu, v, menuInfo);
-        menu.add(0, CM_DELETE_ID, 0, R.string.delete_record);
     }
 
     public boolean onContextItemSelected(MenuItem item) {
 
         if (item.getItemId() == CM_DELETE_ID) {
             // получаем из пункта контекстного меню данные по пункту списка
-            AdapterView.AdapterContextMenuInfo acmi = (AdapterView.AdapterContextMenuInfo) item
-                    .getMenuInfo();
 
-            // подключаемся к БД
-            db.delCategory(acmi.id);
+            int position;
+            try {
+                position = categoryAdapter.getPosition();
+            } catch (Exception e) {
+                return super.onContextItemSelected(item);
+            }
+
+
             // получаем новый курсор с данными
-            LoaderManager.getInstance(this).getLoader(0).forceLoad();
+            categoryAdapter.deleteItem(position, db);
+            categoryAdapter.clearItems();
+            loadCategories();
             return true;
         }
         return super.onContextItemSelected(item);
@@ -136,23 +152,6 @@ public class CategoryList extends AppCompatActivity implements LoaderManager.Loa
         // закрываем подключение при выходе
         db.close();
     }
-
-    @NonNull
-    @Override
-    public Loader<Cursor> onCreateLoader(int id, @Nullable Bundle args) {
-        return new AppCursorLoader(this, db, "Category list");
-    }
-
-    @Override
-    public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor data) {
-        scAdapter.swapCursor(data);
-    }
-
-    @Override
-    public void onLoaderReset(@NonNull Loader<Cursor> loader) {
-
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
