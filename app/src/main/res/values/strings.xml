@@ -18,6 +18,6 @@
     <string name="delete_record">Удалить</string>
     <string name="direction_minus">-</string>
     <string name="direction_plus">+</string>
-    <string name="main_information">Сводка</string>
+    <string name="main_information">Finance analytix</string>
     <string name="operation_date">дата операции</string>
 </resources>

@@ -1,14 +1,11 @@
 package com.Bogatnov.financeanalytix.Entity;
 
-import java.util.Date;
-
 public class Category {
-   private Integer id;
-   private String name;
-   private String color;
-   public Category(){
 
-   }
+    private Integer id;
+    private String name;
+    private String color;
+
     public Category(Integer id,
                      String name,
                     String color){
@@ -41,4 +38,4 @@ public class Category {
     public void setColor(String color) {
         this.color = color;
     }
-}
+    }

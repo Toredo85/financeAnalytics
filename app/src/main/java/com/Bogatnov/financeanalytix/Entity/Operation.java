@@ -3,40 +3,40 @@ package com.Bogatnov.financeanalytix.Entity;
 import java.util.Date;
 
 public class Operation {
-    private Integer transactionid;
-    private Date date;
+    private Integer id;
+    private String date;
     private String direction;
     private Category category;
     private double amount;
 
     public Operation() {}
 
-    public Operation(Integer nTransactionid,
-        Date ndate,
+    public Operation(Integer id,
+        String ndate,
         String ndirection,
         Category ncategory,
         double namount){
 
-        this.transactionid = nTransactionid;
+        this.id = id;
         this.date = ndate;
         this.direction = ndirection;
         this.category = ncategory;
         this.amount = namount;
     }
 
-    public Integer getTransactionid() {
-        return transactionid;
+    public Integer getId() {
+        return id;
     }
 
-    public void setTransactionid(Integer transactionid) {
-        this.transactionid = transactionid;
+    public void setId(Integer transactionid) {
+        this.id = id;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 

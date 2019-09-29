@@ -36,7 +36,7 @@ public class CategoryList extends AppCompatActivity implements View.OnClickListe
 
     private void initRecyclerView() {
 
-        // остальной код выше не изменился
+
         categoriesRecyclerView = findViewById(R.id.category_recycler_view);
         categoriesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         CategoryAdapter.OnCategoryClickListener onCategoryClickListener = new CategoryAdapter.OnCategoryClickListener() {

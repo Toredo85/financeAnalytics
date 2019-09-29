@@ -1,18 +1,15 @@
 package com.Bogatnov.financeanalytix.Adapters;
 
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.Bogatnov.financeanalytix.AppDAO;
-import com.Bogatnov.financeanalytix.CategoryList;
 import com.Bogatnov.financeanalytix.DBActions;
 import com.Bogatnov.financeanalytix.Entity.Category;
 import com.Bogatnov.financeanalytix.R;
@@ -93,6 +90,11 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
             nameTextView.setText(category.getName());
             idTextView.setText(String.valueOf(category.getId()));
             colorTextView.setText(category.getColor());
+
+            if (!category.getColor().isEmpty()){
+                colorTextView.setTextColor(Color.parseColor(category.getColor()));
+                colorTextView.setBackgroundColor(Color.parseColor(category.getColor()));
+            }
         }
 
         public void onCreateContextMenu(ContextMenu menu, View v,

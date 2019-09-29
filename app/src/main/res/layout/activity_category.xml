@@ -9,7 +9,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:paddingTop="@dimen/padding_under_header">
 
@@ -32,5 +32,13 @@
             android:textColor="@android:color/background_light"
             android:textSize="18sp" />
     </LinearLayout>
+
+    <EditText
+        android:id="@+id/color"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:text="Цвет"
+        android:textSize="24sp" />
 
 </LinearLayout>

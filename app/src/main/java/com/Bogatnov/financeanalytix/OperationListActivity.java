@@ -20,16 +20,43 @@ import androidx.cursoradapter.widget.SimpleCursorAdapter;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.Loader;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.Bogatnov.financeanalytix.Adapters.CategoryAdapter;
+import com.Bogatnov.financeanalytix.Adapters.OperationAdapter;
+import com.Bogatnov.financeanalytix.Entity.Category;
+import com.Bogatnov.financeanalytix.Entity.Operation;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 
-public class OperationListActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>, View.OnClickListener, NavigationView.OnNavigationItemSelectedListener {
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+
+public class OperationListActivity extends AppCompatActivity implements View.OnClickListener, NavigationView.OnNavigationItemSelectedListener {
 
     final String LOG_TAG = "myLogs";
     private static final int CM_DELETE_ID = 1;
+    Intent thisIntent;
     DBActions db;
-    SimpleCursorAdapter scAdapter;
+    private RecyclerView operationsRecyclerView;
+    private OperationAdapter operationAdapter;
 
+    private void initRecyclerView() {
+        operationsRecyclerView = findViewById(R.id.operation_recycler_view);
+        operationsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        OperationAdapter.OnOperationClickListener onOperationClickListener = new OperationAdapter.OnOperationClickListener() {
+            @Override
+            public void onOperationClick(Operation operation) {
+
+            }
+
+            };
+        operationAdapter = new OperationAdapter(onOperationClickListener);
+        operationsRecyclerView.setAdapter(operationAdapter);
+        registerForContextMenu(operationsRecyclerView);
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,20 +79,36 @@ public class OperationListActivity extends AppCompatActivity implements LoaderMa
         db = new DBActions(this);
         db.open();
 
-        // формируем столбцы сопоставления
-        String[] from = new String[]{"_id", "direction", "categoryname", "date", "amount"};
-        int[] to = new int[]{R.id._id, R.id.direction, R.id.category, R.id.date, R.id.amount};
+        initRecyclerView();
+        loadOperations();
+    }
+    private void loadOperations() {
+        Collection<Operation> operations = getOperations();
+        operationAdapter.setItems(operations);
+    }
 
-        // создаем адаптер и настраиваем список
-        scAdapter = new SimpleCursorAdapter(this, R.layout.operatoin_row, null, from, to, 0);
-        operationsListView = (ListView) findViewById(R.id.operation_list);
-        operationsListView.setAdapter(scAdapter);
-        // добавляем контекстное меню к списку
-        registerForContextMenu(operationsListView);
+    private Collection<Operation> getOperations() {
 
-        // создаем лоадер для чтения данных
-        LoaderManager.getInstance(this).initLoader(0,null,this);
+        Cursor cursor = db.getAllDataOperations();
+        ArrayList operationsArray = new ArrayList<Operation>();
+        if(cursor.moveToFirst()) {
+            do {
+                int idCategory = cursor.getInt(cursor.getColumnIndex("categoryid"));
+                String name = cursor.getString(cursor.getColumnIndex("categoryname"));
+                String color = cursor.getString(cursor.getColumnIndex("color"));
 
+                Category category = new Category(idCategory, name, color);
+
+                int id = cursor.getInt(cursor.getColumnIndex("_id"));
+                String date = cursor.getString(cursor.getColumnIndex("date"));
+                String direction = cursor.getString(cursor.getColumnIndex("direction"));
+                Double amount = cursor.getDouble(cursor.getColumnIndex("amount"));
+
+                operationsArray.add(new Operation(id, date, direction, category, amount));
+
+            } while (cursor.moveToNext());
+        }
+        return operationsArray;
     }
 
     @Override
@@ -76,28 +119,25 @@ public class OperationListActivity extends AppCompatActivity implements LoaderMa
                 // добавляем запись
                 Intent intent = new Intent(this, EnterOperationActivity.class);
                 startActivity(intent);
-                // получаем новый курсор с данными
-                LoaderManager.getInstance(this).getLoader(0).forceLoad();
         }
-    }
-
-    public void onCreateContextMenu(ContextMenu menu, View v,
-                                    ContextMenu.ContextMenuInfo menuInfo) {
-        super.onCreateContextMenu(menu, v, menuInfo);
-        menu.add(0, CM_DELETE_ID, 0, R.string.delete_record);
     }
 
     public boolean onContextItemSelected(MenuItem item) {
 
         if (item.getItemId() == CM_DELETE_ID) {
             // получаем из пункта контекстного меню данные по пункту списка
-            AdapterView.AdapterContextMenuInfo acmi = (AdapterView.AdapterContextMenuInfo) item
-                    .getMenuInfo();
-
-            // подключаемся к БД
-            db.delOperation(acmi.id);
             // получаем новый курсор с данными
-            LoaderManager.getInstance(this).getLoader(0).forceLoad();
+
+            int position;
+            try {
+                position = operationAdapter.getPosition();
+            } catch (Exception e) {
+                return super.onContextItemSelected(item);
+            }
+
+            operationAdapter.deleteItem(position, db);
+            operationAdapter.clearItems();
+            loadOperations();
             return true;
         }
         return super.onContextItemSelected(item);
@@ -110,20 +150,7 @@ public class OperationListActivity extends AppCompatActivity implements LoaderMa
     }
 
     @NonNull
-    @Override
-    public Loader<Cursor> onCreateLoader(int id, @Nullable Bundle args) {
-        return new AppCursorLoader(this, db, "Operation list");
-    }
 
-    @Override
-    public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor data) {
-        scAdapter.swapCursor(data);
-    }
-
-    @Override
-    public void onLoaderReset(@NonNull Loader<Cursor> loader) {
-
-    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
