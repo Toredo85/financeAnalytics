@@ -18,10 +18,13 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="3"
+            android:autoText="true"
             android:gravity="bottom"
             android:text="Текущий остаток:"
             android:textColor="#009688"
-            android:textSize="30sp" />
+            app:autoSizeMaxTextSize="@dimen/EditText"
+            app:autoSizeMinTextSize="8sp"
+            app:autoSizeTextType="uniform" />
 
         <TextView
             android:id="@+id/textBalance"
@@ -43,11 +46,14 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="3"
+            android:autoText="true"
             android:gravity="bottom"
             android:paddingLeft="20dp"
             android:text="Плановые расходы"
             android:textColor="#E91E63"
-            android:textSize="24sp" />
+            app:autoSizeMaxTextSize="@dimen/EditText"
+            app:autoSizeMinTextSize="8sp"
+            app:autoSizeTextType="uniform" />
 
         <TextView
             android:id="@+id/textPlan"
@@ -72,7 +78,9 @@
             android:paddingLeft="20dp"
             android:text="Фактические расходы:"
             android:textColor="#4B4B4B"
-            android:textSize="24sp" />
+            app:autoSizeMaxTextSize="@dimen/EditText"
+            app:autoSizeMinTextSize="8sp"
+            app:autoSizeTextType="uniform" />
 
         <TextView
             android:id="@+id/textFactExpreses"

@@ -6,6 +6,8 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.Bogatnov.financeanalytix.Entity.Category;
+
 import java.util.Date;
 
 public class DBActions {
@@ -88,6 +90,29 @@ public class DBActions {
         mDB.delete(DB_TABLE_CATEGORIES, COLUMN_ID + " = " + id, null);
     }
 
+    // получить запись из DB_TABLE
+    public Category getCategory(long id) {
+        Category category = new Category(0,"","");
+        String selection = "_id = ?";
+        String[] selectionArgs = new String[] { String.valueOf(id) };
+        Cursor c = mDB.query(DB_TABLE_CATEGORIES, null, selection, selectionArgs, null, null, null);
+        if (c.moveToFirst()){
+            int categoryId = (c.getInt(c.getColumnIndex("_id")));
+            String categoryName = (c.getString(c.getColumnIndex("name")));
+            String categoryColor = (c.getString(c.getColumnIndex("color")));
+
+            return new Category(categoryId,categoryName,categoryColor);
+        }
+        return new Category(0,"","");
+    }
+
+    // изменить запись из DB_TABLE
+    public void updateCategory(long id, String name, String color) {
+        ContentValues cv = new ContentValues();
+        cv.put(COLUMN_NAME, name);
+        cv.put(COLUMN_COLOR, color);
+        mDB.update(DB_TABLE_CATEGORIES, cv,COLUMN_ID + " = " + id, null);
+    }
     // удалить операцию
     public void delOperation(long id) {
         mDB.delete(DB_TABLE_OPERATIONS, COLUMN_ID + " = " + id, null);

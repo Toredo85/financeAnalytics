@@ -18,6 +18,8 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Date;
@@ -146,7 +148,16 @@ public class EnterOperationActivity extends AppCompatActivity implements View.On
             myYear = year;
             myMonth = monthOfYear + 1;
             myDay = dayOfMonth;
-            date.setText("" + myYear + "-" + myMonth + "-" + myDay);
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-M-d");
+            Date selectDate = null;
+            try {
+                selectDate = sdf.parse("" + myYear + "-" + myMonth + "-" + myDay);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            SimpleDateFormat sdfOut = new SimpleDateFormat("dd.MM.yyyy");
+
+            date.setText(sdfOut.format(selectDate));
         }
     };
 }

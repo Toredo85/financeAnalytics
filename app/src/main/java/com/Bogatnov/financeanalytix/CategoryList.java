@@ -31,6 +31,7 @@ public class CategoryList extends AppCompatActivity implements View.OnClickListe
     DBActions db;
     Intent thisIntent;
     private static final int CM_DELETE_ID = 1;
+    private static final int CM_EDIT_ID = 2;
     private RecyclerView categoriesRecyclerView;
     private CategoryAdapter categoryAdapter;
 
@@ -142,6 +143,23 @@ public class CategoryList extends AppCompatActivity implements View.OnClickListe
             categoryAdapter.deleteItem(position, db);
             categoryAdapter.clearItems();
             loadCategories();
+            return true;
+
+        }
+        if (item.getItemId() == CM_EDIT_ID) {
+            // получаем из пункта контекстного меню данные по пункту списка
+
+            int position;
+            try {
+                position = categoryAdapter.getPosition();
+            } catch (Exception e) {
+                return super.onContextItemSelected(item);
+            }
+
+
+            Intent intent = new Intent(this, CategoryActivity.class);
+            intent.putExtra("_ID", categoryAdapter.getCategoryId(position));
+            startActivity(intent);
             return true;
         }
         return super.onContextItemSelected(item);

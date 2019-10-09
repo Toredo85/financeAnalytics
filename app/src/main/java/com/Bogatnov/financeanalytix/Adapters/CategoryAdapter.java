@@ -22,6 +22,7 @@ import java.util.List;
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder> {
 
     private static final int CM_DELETE_ID = 1;
+    private static final int CM_EDIT_ID = 2;
     private List<Category> categoryList = new ArrayList<>();
     private OnCategoryClickListener onCategoryClickListener;
     private int position;
@@ -88,7 +89,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
 
         public void bind(Category category) {
             nameTextView.setText(category.getName());
-            idTextView.setText(String.valueOf(category.getId()));
+//            idTextView.setText(String.valueOf(category.getId()));
             colorTextView.setText(category.getColor());
 
             if (!category.getColor().isEmpty()){
@@ -100,6 +101,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
         public void onCreateContextMenu(ContextMenu menu, View v,
                                         ContextMenu.ContextMenuInfo menuInfo) {
             menu.add(0, CM_DELETE_ID, 0, R.string.delete_record);
+            menu.add(0, CM_EDIT_ID, 0, R.string.edit_record);
         }
     }
     public void setItems(Collection<Category> categories) {
@@ -117,6 +119,11 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
         Category category = categoryList.get(position);
         db.delCategory(category.getId());
         notifyDataSetChanged();
+    }
+
+    public int getCategoryId(int position){
+        Category category = categoryList.get(position);
+        return category.getId();
     }
 
     public interface OnCategoryClickListener {

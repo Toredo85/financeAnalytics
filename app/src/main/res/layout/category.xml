@@ -8,17 +8,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
         android:paddingRight="@dimen/nav_header_vertical_spacing"
         android:paddingBottom="@dimen/nav_header_vertical_spacing">
-
-        <TextView
-            android:id="@+id/_id"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="id"
-            android:textSize="30sp"
-            android:visibility="invisible" />
 
         <TextView
             android:id="@+id/name"

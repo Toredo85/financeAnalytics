@@ -3,4 +3,17 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
+    <string-array name="category_colors">
+        <item>#DC143C</item>
+        <item>#32CD32</item>
+        <item>#20B2AA</item>
+        <item>#C71585</item>
+        <item>#FF4500</item>
+
+        <item>#FFD700</item>
+       <!--<item>#8FBC8F</item>-->
+        <item>#00008B</item>
+        <item>#483D8B</item>
+        <item>#800000</item>
+    </string-array>
 </resources>

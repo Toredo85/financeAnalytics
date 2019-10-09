@@ -20,4 +20,5 @@
     <string name="direction_plus">+</string>
     <string name="main_information">Finance analytix</string>
     <string name="operation_date">дата операции</string>
+    <string name="edit_record">Редактировать</string>
 </resources>

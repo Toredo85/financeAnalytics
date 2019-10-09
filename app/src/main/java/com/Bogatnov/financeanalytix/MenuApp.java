@@ -38,9 +38,9 @@ public class MenuApp extends AppCompatActivity
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+            public void onClick(View v) {
+                Intent intent = new Intent(getThis(), EnterOperationActivity.class);
+                startActivity(intent);
             }
         });
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -67,6 +67,10 @@ public class MenuApp extends AppCompatActivity
 
     public void setContentView(){
         setContentView(R.layout.activity_main);
+    }
+
+    public MenuApp getThis(){
+        return this;
     }
 
     @Override
