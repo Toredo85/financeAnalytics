@@ -73,7 +73,7 @@ public class OperationAdapter  extends RecyclerView.Adapter<OperationAdapter.Ope
             super(itemView);
 
             categoryTextView = itemView.findViewById(R.id.category);
-            idTextView = itemView.findViewById(R.id._id);
+            //idTextView = itemView.findViewById(R.id._id);
             dateTextView = itemView.findViewById(R.id.date);
             directionTextView = itemView.findViewById(R.id.direction);
             amountTextView = itemView.findViewById(R.id.amount);

@@ -74,7 +74,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
             super(itemView);
 
             nameTextView = itemView.findViewById(R.id.name);
-            idTextView = itemView.findViewById(R.id._id);
+            //idTextView = itemView.findViewById(R.id._id);
             colorTextView = itemView.findViewById(R.id.color);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
