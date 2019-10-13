@@ -62,7 +62,7 @@ public class MenuApp extends AppCompatActivity
         int myDay = cal.get(Calendar.DAY_OF_MONTH);
         balance.setText(String.format("%10.2f",db.getBalance("" + myYear + "-" + myMonth + "-" + myDay)));
         expreses.setText(String.format("%10.2f",db.getExpenses("" + myYear + "-" + myMonth + "-1",
-                "" + myYear + "-" + myMonth + "-" + myDay)));
+                "" + myYear + "-" + myMonth + "-" + myDay, "cashmove")));
     }
 
     public void setContentView(){
@@ -113,6 +113,9 @@ public class MenuApp extends AppCompatActivity
 
         if (id == R.id.nav_home) {
             Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+        } else if (id == R.id.nav_plan_operation_list) {
+            Intent intent = new Intent(this, PlanOperationListActivity.class);
             startActivity(intent);
         } else if (id == R.id.nav_operation_list) {
             Intent intent = new Intent(this, OperationListActivity.class);

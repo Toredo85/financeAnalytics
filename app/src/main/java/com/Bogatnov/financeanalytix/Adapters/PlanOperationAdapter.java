@@ -18,27 +18,27 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class OperationAdapter  extends RecyclerView.Adapter<OperationAdapter.OperationViewHolder> {
+public class PlanOperationAdapter extends RecyclerView.Adapter<PlanOperationAdapter.OperationViewHolder> {
 
     private static final int CM_DELETE_ID = 1;
     private List<Operation> operationList = new ArrayList<>();
-    private OperationAdapter.OnOperationClickListener onOperationClickListener;
+    private PlanOperationAdapter.OnOperationClickListener onOperationClickListener;
     private int position;
 
-    public OperationAdapter(OperationAdapter.OnOperationClickListener onOperationClickListener) {
+    public PlanOperationAdapter(PlanOperationAdapter.OnOperationClickListener onOperationClickListener) {
         this.onOperationClickListener = onOperationClickListener;
     }
 
     @NonNull
     @Override
-    public OperationAdapter.OperationViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public PlanOperationAdapter.OperationViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.operation_row, parent, false);
-        return new OperationAdapter.OperationViewHolder(view);
+        return new PlanOperationAdapter.OperationViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final OperationAdapter.OperationViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final PlanOperationAdapter.OperationViewHolder holder, int position) {
         holder.bind(operationList.get(position));
         holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
@@ -128,7 +128,7 @@ public class OperationAdapter  extends RecyclerView.Adapter<OperationAdapter.Ope
 
     public void deleteItem(int position, DBActions db){
         Operation operation = operationList.get(position);
-        db.delOperation(operation.getId(), "cashmove");
+        db.delOperation(operation.getId(), "plancashmove");
         notifyDataSetChanged();
     }
 

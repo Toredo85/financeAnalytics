@@ -3,28 +3,22 @@ package com.Bogatnov.financeanalytix;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ListView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
-import androidx.cursoradapter.widget.SimpleCursorAdapter;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.loader.app.LoaderManager;
-import androidx.loader.content.Loader;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.Bogatnov.financeanalytix.Adapters.CategoryAdapter;
 import com.Bogatnov.financeanalytix.Adapters.OperationAdapter;
+import com.Bogatnov.financeanalytix.Adapters.PlanOperationAdapter;
 import com.Bogatnov.financeanalytix.Entity.Category;
 import com.Bogatnov.financeanalytix.Entity.Operation;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -32,29 +26,28 @@ import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 
-public class OperationListActivity extends AppCompatActivity implements View.OnClickListener, NavigationView.OnNavigationItemSelectedListener {
+public class PlanOperationListActivity extends AppCompatActivity implements View.OnClickListener, NavigationView.OnNavigationItemSelectedListener {
 
     final String LOG_TAG = "myLogs";
     private static final int CM_DELETE_ID = 1;
     Intent thisIntent;
-    String factTable = "cashmove";
+    String planTable = "plancashmove";
     DBActions db;
     private RecyclerView operationsRecyclerView;
-    private OperationAdapter operationAdapter;
+    private PlanOperationAdapter operationAdapter;
 
     private void initRecyclerView() {
         operationsRecyclerView = findViewById(R.id.operation_recycler_view);
         operationsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        OperationAdapter.OnOperationClickListener onOperationClickListener = new OperationAdapter.OnOperationClickListener() {
+        PlanOperationAdapter.OnOperationClickListener onOperationClickListener = new PlanOperationAdapter.OnOperationClickListener() {
             @Override
             public void onOperationClick(Operation operation) {
 
             }
 
             };
-        operationAdapter = new OperationAdapter(onOperationClickListener);
+        operationAdapter = new PlanOperationAdapter(onOperationClickListener);
         operationsRecyclerView.setAdapter(operationAdapter);
         registerForContextMenu(operationsRecyclerView);
     }
@@ -89,7 +82,8 @@ public class OperationListActivity extends AppCompatActivity implements View.OnC
     }
 
     private Collection<Operation> getOperations() {
-        Cursor cursor = db.getAllDataOperations(factTable);
+
+        Cursor cursor = db.getAllDataOperations(planTable);
         ArrayList operationsArray = new ArrayList<Operation>();
         if(cursor.moveToFirst()) {
             do {
@@ -118,7 +112,7 @@ public class OperationListActivity extends AppCompatActivity implements View.OnC
             case R.id.fab:
                 // добавляем запись
                 Intent intent = new Intent(this, EnterOperationActivity.class);
-                intent.putExtra("table", factTable);
+                intent.putExtra("table", planTable);
                 startActivity(intent);
         }
     }

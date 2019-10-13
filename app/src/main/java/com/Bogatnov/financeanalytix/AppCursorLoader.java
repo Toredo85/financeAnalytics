@@ -26,7 +26,7 @@ public class AppCursorLoader extends CursorLoader {
             return cursor;
         }
         if (activity == "Operation list") {
-            Cursor cursor = db.getAllDataOperations();
+            Cursor cursor = db.getAllDataOperations("cashmove");
             return cursor;
         }
         else {

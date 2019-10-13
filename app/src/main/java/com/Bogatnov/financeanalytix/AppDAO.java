@@ -8,7 +8,7 @@ import android.util.Log;
 public class AppDAO extends SQLiteOpenHelper {
     public AppDAO(Context context) {
         // конструктор суперкласса
-        super(context, "fanalytixDB", null, 3);
+        super(context, "fanalytixDB", null, 5);
     }
     final String LOG_TAG = "myLogs";
 
@@ -74,6 +74,49 @@ public class AppDAO extends SQLiteOpenHelper {
 
                 db.setTransactionSuccessful();
             } finally {
+                db.endTransaction();
+            }
+        }
+        if (oldVersion == 3 && newVersion == 4) {
+
+            // данные для таблицы должностей
+
+            // данные для таблицы должностей
+
+            db.beginTransaction();
+            try {
+                db.execSQL("create table plancashmove ("
+                        + "transactionid integer primary key autoincrement,"
+                        + "date numeric,"
+                        + "direction text,"
+                        + "category integer,"
+                        + "amount numeric" + ");");
+
+                db.setTransactionSuccessful();
+            }
+            finally {
+                db.endTransaction();
+            }
+        }
+        if (oldVersion == 4 && newVersion == 5) {
+
+            // данные для таблицы должностей
+
+            // данные для таблицы должностей
+
+            db.beginTransaction();
+            try {
+                db.execSQL("DROP TABLE plancashmove");
+                db.execSQL("create table plancashmove ("
+                        + "_id integer primary key autoincrement,"
+                        + "date numeric,"
+                        + "direction text,"
+                        + "category integer,"
+                        + "amount numeric" + ");");
+
+                db.setTransactionSuccessful();
+            }
+            finally {
                 db.endTransaction();
             }
         }

@@ -33,6 +33,7 @@ public class EnterOperationActivity extends AppCompatActivity implements View.On
     TextView categoryText;
     EditText amount;
     TextView date;
+    String table;
     String direction = "-";
     int DIALOG_DATE = 1;
     int myYear = 1;
@@ -54,6 +55,9 @@ public class EnterOperationActivity extends AppCompatActivity implements View.On
         //categoryIdView = (TextView) findViewById(R.id.);
         amount = (EditText) findViewById(R.id.amount);
         date = (TextView) findViewById(R.id.date);
+
+        table = getIntent().getStringExtra("table");
+
         // создаем объект для создания и управления версиями БД
         // открываем подключение к БД
         db = new DBActions(this);
@@ -109,8 +113,14 @@ public class EnterOperationActivity extends AppCompatActivity implements View.On
                 //categoryId = Integer.valueOf(categoryIdView.getText().toString());
 
                 // вставляем запись и получаем ее ID
-                db.addOperation(direction, categoryId, amountValue, dateOperation);
-                Intent intent = new Intent(this, OperationListActivity.class);
+                db.addOperation(direction, categoryId, amountValue, dateOperation, table);
+                Intent intent;
+                if (table.equals("cashmove")) {
+                    intent = new Intent(this, OperationListActivity.class);
+                }
+                else {
+                    intent = new Intent(this, PlanOperationListActivity.class);
+                }
                 startActivity(intent);
                 break;
                 default:

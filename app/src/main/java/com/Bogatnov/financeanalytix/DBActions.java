@@ -51,7 +51,7 @@ public class DBActions {
     public Cursor getEmptyCursor() {
         return mDB.rawQuery("Select null from category where false", null);
     }
-    public Cursor getAllDataOperations() {
+    public Cursor getAllDataOperations(String table) {
         String sqlQuery = "select "
                 + "CM._id as _id,"
                 + "CM.date as date, "
@@ -60,7 +60,7 @@ public class DBActions {
                 + "CM.amount as amount, "
                 + "C.name as categoryname, "
                 + "C.color as color "
-                + "from cashmove as CM "
+                + "from " + table + " as CM "
                 + "inner join categories as C "
                 + "on CM.category = C._id "
                 + "order by date";
@@ -75,14 +75,14 @@ public class DBActions {
         mDB.insert(DB_TABLE_CATEGORIES, null, cv);
     }
 
-    public void addOperation(String direction, int categoryId, String amount, String date) {
+    public void addOperation(String direction, int categoryId, String amount, String date, String table) {
         ContentValues cv = new ContentValues();
         cv.put(COLUMN_DIRECTION, direction);
         cv.put(COLUMN_CATEGORY_ID, categoryId);
         cv.put(COLUMN_AMOUNT, amount);
         cv.put(COLUMN_DATE, date);
 
-        mDB.insert(DB_TABLE_OPERATIONS, null, cv);
+        mDB.insert(table, null, cv);
     }
 
     // удалить запись из DB_TABLE
@@ -114,8 +114,8 @@ public class DBActions {
         mDB.update(DB_TABLE_CATEGORIES, cv,COLUMN_ID + " = " + id, null);
     }
     // удалить операцию
-    public void delOperation(long id) {
-        mDB.delete(DB_TABLE_OPERATIONS, COLUMN_ID + " = " + id, null);
+    public void delOperation(long id, String table) {
+        mDB.delete(table, COLUMN_ID + " = " + id, null);
     }
 
     public Double getBalance(String currentDate) {
@@ -135,9 +135,9 @@ public class DBActions {
         }
         return Double.valueOf(0);
     }
-    public Double getExpenses(String startMonthDate, String currentDate) {
+    public Double getExpenses(String startMonthDate, String currentDate, String table) {
 
-        Cursor cursor = mDB.rawQuery("Select sum(amount) as expenses from cashmove where direction = ? and date between ? and ?", new String[] {"-", startMonthDate, currentDate});
+        Cursor cursor = mDB.rawQuery("Select sum(amount) as expenses from " + table + " where direction = ? and date between ? and ?", new String[] {"-", startMonthDate, currentDate});
 
         if (cursor.moveToFirst()) {
 
