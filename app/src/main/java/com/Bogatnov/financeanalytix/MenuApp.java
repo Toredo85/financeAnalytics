@@ -114,6 +114,9 @@ public class MenuApp extends AppCompatActivity
         if (id == R.id.nav_home) {
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
+        } else if (id == R.id.nav_bubget_operation_list) {
+            Intent intent = new Intent(this, BudgetOperationListActivity.class);
+            startActivity(intent);
         } else if (id == R.id.nav_plan_operation_list) {
             Intent intent = new Intent(this, PlanOperationListActivity.class);
             startActivity(intent);

@@ -9,8 +9,12 @@
             android:icon="@drawable/home_main_menu"
             android:title="@string/menu_home" />
         <item
+            android:id="@+id/nav_bubget_operation_list"
+            android:icon="@drawable/cheapsavebudgetmoneypiggybank_109735"
+            android:title="@string/menu_budget_operation_list" />
+        <item
             android:id="@+id/nav_plan_operation_list"
-            android:icon="@drawable/chartflexibledatestatstatistics_82950"
+            android:icon="@drawable/flexiblechagedatecalendarbooking_109688"
             android:title="@string/menu_plan_operation_list" />
         <item
             android:id="@+id/nav_operation_list"

@@ -8,7 +8,7 @@ import android.util.Log;
 public class AppDAO extends SQLiteOpenHelper {
     public AppDAO(Context context) {
         // конструктор суперкласса
-        super(context, "fanalytixDB", null, 5);
+        super(context, "fanalytixDB", null, 6);
     }
     final String LOG_TAG = "myLogs";
 
@@ -21,6 +21,18 @@ public class AppDAO extends SQLiteOpenHelper {
                 + "name text,"
                 + "color text" + ");");
         db.execSQL("create table cashmove ("
+                + "_id integer primary key autoincrement,"
+                + "date numeric,"
+                + "direction text,"
+                + "category integer,"
+                + "amount numeric" + ");");
+        db.execSQL("create table plancashmove ("
+                + "_id integer primary key autoincrement,"
+                + "date numeric,"
+                + "direction text,"
+                + "category integer,"
+                + "amount numeric" + ");");
+        db.execSQL("create table budgetoperations ("
                 + "_id integer primary key autoincrement,"
                 + "date numeric,"
                 + "direction text,"
@@ -108,6 +120,27 @@ public class AppDAO extends SQLiteOpenHelper {
             try {
                 db.execSQL("DROP TABLE plancashmove");
                 db.execSQL("create table plancashmove ("
+                        + "_id integer primary key autoincrement,"
+                        + "date numeric,"
+                        + "direction text,"
+                        + "category integer,"
+                        + "amount numeric" + ");");
+
+                db.setTransactionSuccessful();
+            }
+            finally {
+                db.endTransaction();
+            }
+        }
+        if (oldVersion == 5 && newVersion == 6) {
+
+            // данные для таблицы должностей
+
+            // данные для таблицы должностей
+
+            db.beginTransaction();
+            try {
+                db.execSQL("create table budgetoperations ("
                         + "_id integer primary key autoincrement,"
                         + "date numeric,"
                         + "direction text,"

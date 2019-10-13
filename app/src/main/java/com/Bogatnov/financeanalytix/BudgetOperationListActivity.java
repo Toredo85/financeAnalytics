@@ -17,7 +17,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.Bogatnov.financeanalytix.Adapters.OperationAdapter;
+import com.Bogatnov.financeanalytix.Adapters.BudgetOperationAdapter;
 import com.Bogatnov.financeanalytix.Adapters.PlanOperationAdapter;
 import com.Bogatnov.financeanalytix.Entity.Category;
 import com.Bogatnov.financeanalytix.Entity.Operation;
@@ -27,27 +27,27 @@ import com.google.android.material.navigation.NavigationView;
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class PlanOperationListActivity extends AppCompatActivity implements View.OnClickListener, NavigationView.OnNavigationItemSelectedListener {
+public class BudgetOperationListActivity extends AppCompatActivity implements View.OnClickListener, NavigationView.OnNavigationItemSelectedListener {
 
     final String LOG_TAG = "myLogs";
     private static final int CM_DELETE_ID = 1;
     Intent thisIntent;
-    String planTable = "plancashmove";
+    String planTable = "budgetoperations";
     DBActions db;
     private RecyclerView operationsRecyclerView;
-    private PlanOperationAdapter operationAdapter;
+    private BudgetOperationAdapter operationAdapter;
 
     private void initRecyclerView() {
         operationsRecyclerView = findViewById(R.id.operation_recycler_view);
         operationsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        PlanOperationAdapter.OnOperationClickListener onOperationClickListener = new PlanOperationAdapter.OnOperationClickListener() {
+        BudgetOperationAdapter.OnOperationClickListener onOperationClickListener = new BudgetOperationAdapter.OnOperationClickListener() {
             @Override
             public void onOperationClick(Operation operation) {
 
             }
 
             };
-        operationAdapter = new PlanOperationAdapter(onOperationClickListener);
+        operationAdapter = new BudgetOperationAdapter(onOperationClickListener);
         operationsRecyclerView.setAdapter(operationAdapter);
         registerForContextMenu(operationsRecyclerView);
     }
@@ -111,8 +111,7 @@ public class PlanOperationListActivity extends AppCompatActivity implements View
         switch (view.getId()) {
             case R.id.fab:
                 // добавляем запись
-                Intent intent = new Intent(this, EnterOperationActivity.class);
-                intent.putExtra("table", planTable);
+                Intent intent = new Intent(this, EnterBudgetActivity.class);
                 startActivity(intent);
         }
     }

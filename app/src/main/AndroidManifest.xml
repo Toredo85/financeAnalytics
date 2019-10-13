@@ -17,10 +17,14 @@
             />
         <activity android:name=".EnterOperationActivity"
             android:label="@string/menu_send"/>
+        <activity android:name=".EnterBudgetActivity"
+            android:label="Ввести бюджет"/>
         <activity android:name=".PlanOperationListActivity"
             android:label="@string/menu_plan_operation_list"
             android:theme="@style/AppTheme.NoActionBar"/>
-
+        <activity android:name=".BudgetOperationListActivity"
+            android:label="@string/menu_budget_operation_list"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".OperationListActivity"
             android:label="@string/menu_operation_list"
             android:theme="@style/AppTheme.NoActionBar"/>
