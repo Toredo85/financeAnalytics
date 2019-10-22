@@ -110,6 +110,17 @@ public class EnterOperationActivity extends AppCompatActivity implements View.On
                 // подготовим данные для вставки в виде пар: наименование столбца - значение
                 String amountValue = amount.getText().toString();
                 String dateOperation = date.getText().toString();
+                SimpleDateFormat sdfOut = new SimpleDateFormat("dd.MM.yyyy");
+                Date sDate = null;
+                try {
+                    sDate = sdfOut.parse(dateOperation);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-M-d");
+
+                dateOperation = sdf.format(sDate);
+
                 //categoryId = Integer.valueOf(categoryIdView.getText().toString());
 
                 // вставляем запись и получаем ее ID

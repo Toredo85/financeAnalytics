@@ -26,6 +26,8 @@ public class MenuApp extends AppCompatActivity
     DBActions db;
     TextView balance;
     TextView expreses;
+    TextView planExpresses;
+
     final String LOG_TAG = "myLogs";
 
     @SuppressLint("DefaultLocale")
@@ -40,6 +42,7 @@ public class MenuApp extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getThis(), EnterOperationActivity.class);
+                intent.putExtra("table", "cashmove");
                 startActivity(intent);
             }
         });
@@ -56,6 +59,7 @@ public class MenuApp extends AppCompatActivity
         db.open();
         balance = (TextView) findViewById(R.id.textBalance);
         expreses = (TextView) findViewById(R.id.textFactExpreses);
+        planExpresses = (TextView) findViewById(R.id.textPlan);
         Calendar cal = Calendar.getInstance();
         int myYear = cal.get(Calendar.YEAR);
         int myMonth = cal.get(Calendar.MONTH)+1;
@@ -63,6 +67,8 @@ public class MenuApp extends AppCompatActivity
         balance.setText(String.format("%10.2f",db.getBalance("" + myYear + "-" + myMonth + "-" + myDay)));
         expreses.setText(String.format("%10.2f",db.getExpenses("" + myYear + "-" + myMonth + "-1",
                 "" + myYear + "-" + myMonth + "-" + myDay, "cashmove")));
+        planExpresses.setText(String.format("%10.2f",db.getExpenses("" + myYear + "-" + myMonth + "-1",
+                "" + myYear + "-" + myMonth + "-" + myDay, "budgetoperations")));
     }
 
     public void setContentView(){
