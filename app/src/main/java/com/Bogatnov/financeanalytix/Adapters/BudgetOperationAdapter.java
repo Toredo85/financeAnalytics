@@ -5,6 +5,7 @@ import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -14,8 +15,11 @@ import com.Bogatnov.financeanalytix.DBActions;
 import com.Bogatnov.financeanalytix.Entity.Operation;
 import com.Bogatnov.financeanalytix.R;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 public class BudgetOperationAdapter extends RecyclerView.Adapter<BudgetOperationAdapter.OperationViewHolder> {
@@ -66,6 +70,7 @@ public class BudgetOperationAdapter extends RecyclerView.Adapter<BudgetOperation
         private TextView dateTextView;
         private TextView directionTextView;
         private TextView amountTextView;
+        private LinearLayout colorOperation;
 
         // Мы также создали конструктор, который принимает на вход View-компонент строкИ
         // и ищет все дочерние компоненты
@@ -73,7 +78,7 @@ public class BudgetOperationAdapter extends RecyclerView.Adapter<BudgetOperation
             super(itemView);
 
             categoryTextView = itemView.findViewById(R.id.category);
-            //idTextView = itemView.findViewById(R.id._id);
+            colorOperation = itemView.findViewById(R.id.color_operation);
             dateTextView = itemView.findViewById(R.id.date);
             directionTextView = itemView.findViewById(R.id.direction);
             amountTextView = itemView.findViewById(R.id.amount);
@@ -91,22 +96,35 @@ public class BudgetOperationAdapter extends RecyclerView.Adapter<BudgetOperation
 
         public void bind(Operation operation) {
             categoryTextView.setText(operation.getCategory().getName());
-            //idTextView.setText(String.valueOf(operation.getId()));
-            dateTextView.setText(String.valueOf(operation.getDate()));
-            directionTextView.setText(String.valueOf(operation.getDirection()));
-            amountTextView.setText(String.valueOf(operation.getAmount()));
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-M-d");
+            Date sDate = null;
+            String dateOperation = null;
+            try {
+                sDate = sdf.parse(operation.getDate());
+                SimpleDateFormat sdfOut = new SimpleDateFormat("dd.MM.yyyy");
+                dateOperation = sdfOut.format(sDate);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            dateTextView.setText(dateOperation);
+            String direct = String.valueOf(operation.getDirection());
+            directionTextView.setText(direct);
+            if (direct.equals("+")) {
+                amountTextView.setText(String.valueOf(operation.getAmount()));
+            } else {
+                amountTextView.setText("-" + String.valueOf(operation.getAmount()));
+            }
 
-            String i = directionTextView.getText().toString();
-            if (i.equals("-")) {
+            if (direct.equals("-")) {
                 directionTextView.setTextColor(Color.RED);
                 amountTextView.setTextColor(Color.RED);
                 }
-            if (i.equals("+")) {
+            if (direct.equals("+")) {
                 directionTextView.setTextColor(Color.GREEN);
                 amountTextView.setTextColor(Color.GREEN);
                 }
             if (!operation.getCategory().getColor().isEmpty()){
-                categoryTextView.setTextColor(Color.parseColor(operation.getCategory().getColor()));
+                colorOperation.setBackgroundColor(Color.parseColor(operation.getCategory().getColor()));
             }
         }
 

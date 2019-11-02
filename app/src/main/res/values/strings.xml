@@ -24,4 +24,5 @@
     <string name="menu_plan_operation_list">Планируемые расходы</string>
     <string name="menu_budget_operation_list">Бюджеты</string>
     <string name="year">Год</string>
+    <string name="dash">-</string>
 </resources>

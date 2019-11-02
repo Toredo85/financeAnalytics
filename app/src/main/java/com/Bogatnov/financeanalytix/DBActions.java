@@ -8,8 +8,6 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.Bogatnov.financeanalytix.Entity.Category;
 
-import java.util.Date;
-
 public class DBActions {
     private static final String DB_NAME = "fanalytixDB";
     private static final String DB_TABLE_CATEGORIES = "categories";
@@ -151,5 +149,22 @@ public class DBActions {
 
         }
         return Double.valueOf(0);
+    }
+
+    public Cursor getExpensesForDiagramPie(String startMonthDate, String currentDate, String table) {
+
+
+        Cursor cursor = mDB.rawQuery("select "
+                + "Sum(CM.amount) as amount, "
+                + "C.name as categoryname, "
+                + "C.color as color "
+                + "from " + table + " as CM "
+                + "inner join categories as C "
+                + "on CM.category = C._id "
+                + "where direction = ? and date between ? and ? "
+                + "group by C.name, C.color", new String[] {"-", startMonthDate, currentDate});
+
+
+        return cursor;
     }
 }

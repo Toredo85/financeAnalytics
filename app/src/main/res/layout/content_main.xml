@@ -2,99 +2,123 @@
 <LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:orientation="vertical"
-    tools:layout_editor_absoluteX="8dp"
-    tools:layout_editor_absoluteY="8dp"
+
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="match_parent">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingTop="70dp">
+        android:layout_height="match_parent">
 
-        <TextView
-            android:layout_width="0dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="3"
-            android:autoText="true"
-            android:gravity="bottom"
-            android:text="Текущий остаток:"
-            android:textColor="#009688"
-            app:autoSizeMaxTextSize="@dimen/EditText"
-            app:autoSizeMinTextSize="8sp"
-            app:autoSizeTextType="uniform" />
+            tools:layout_editor_absoluteX="8dp"
+            tools:layout_editor_absoluteY="8dp"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/textBalance"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="bottom"
-            android:numeric="decimal"
-            android:text="52062.50"
-            android:textSize="30sp" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingTop="70dp">
 
-    </LinearLayout>
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="3"
+                    android:autoText="false"
+                    android:gravity="bottom"
+                    android:text="Текущий остаток:"
+                    android:textColor="#009688"
+                    android:textStyle="bold"
+                    app:autoSizeMaxTextSize="@dimen/button_text"
+                    app:autoSizeMinTextSize="8sp"
+                    app:autoSizeTextType="uniform" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/textBalance"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="bottom"
+                    android:numeric="decimal"
+                    android:text="52062.50"
+                    android:textSize="24sp"
+                    android:textStyle="bold" />
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="3"
-            android:autoText="true"
-            android:gravity="bottom"
-            android:paddingLeft="20dp"
-            android:text="Плановые расходы"
-            android:textColor="#E91E63"
-            app:autoSizeMaxTextSize="@dimen/EditText"
-            app:autoSizeMinTextSize="8sp"
-            app:autoSizeTextType="uniform" />
+            </LinearLayout>
 
-        <TextView
-            android:id="@+id/textPlan"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="bottom"
-            android:text="40570.00"
-            android:textSize="30sp" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
-    </LinearLayout>
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="3"
+                    android:gravity="bottom"
+                    android:paddingLeft="20dp"
+                    android:text="Фактические расходы:"
+                    android:textColor="#4B4B4B"
+                    app:autoSizeMaxTextSize="@dimen/button_text"
+                    app:autoSizeMinTextSize="8sp"
+                    app:autoSizeTextType="uniform" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/textFactExpreses"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="bottom"
+                    android:text="17520.62"
+                    android:textSize="24sp" />
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="3"
-            android:gravity="bottom"
-            android:paddingLeft="20dp"
-            android:text="Фактические расходы:"
-            android:textColor="#4B4B4B"
-            app:autoSizeMaxTextSize="@dimen/EditText"
-            app:autoSizeMinTextSize="8sp"
-            app:autoSizeTextType="uniform" />
+            </LinearLayout>
 
-        <TextView
-            android:id="@+id/textFactExpreses"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="bottom"
-            android:text="17520.62"
-            android:textSize="30sp" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
-    </LinearLayout>
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="3"
+                    android:autoText="true"
+                    android:gravity="bottom"
+                    android:paddingLeft="20dp"
+                    android:text="Плановые расходы"
+                    android:textColor="#E91E63"
+                    app:autoSizeMaxTextSize="@dimen/button_text"
+                    app:autoSizeMinTextSize="8sp"
+                    app:autoSizeTextType="uniform" />
 
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:srcCompat="@drawable/infographic" />
+                <TextView
+                    android:id="@+id/textPlan"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="bottom"
+                    android:text="40570.00"
+                    android:textSize="24sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <com.github.mikephil.charting.charts.PieChart
+                    android:id="@+id/chart1"
+                    android:layout_width="match_parent"
+                    android:layout_height="400dp"
+                    android:layout_above="@+id/seekBar1" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+
 </LinearLayout>
