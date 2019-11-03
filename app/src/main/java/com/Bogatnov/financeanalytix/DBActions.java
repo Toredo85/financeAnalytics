@@ -167,4 +167,31 @@ public class DBActions {
 
         return cursor;
     }
+    public Cursor getExpensesForMonth(String startDate, String endDate, String tableBudget, String tableFact) {
+
+        Cursor cursor = mDB.rawQuery(
+                "select "
+                + "Sum(t.planamount) as planamount, "
+                + "Sum(t.factamount) as factamount, "
+                + "t.category as category from("
+                    + "select "
+                    + "TP.amount as planamount, "
+                    + "0 as factamount, "
+                    + "C.name as category "
+                    + "from " + tableBudget + " as TP "
+                    + "inner join categories as C "
+                    + "on TP.category = C._id "
+                    + "where direction = ? and date between ? and ? "
+                    + "union all "
+                    + "select "
+                    + "0, "
+                    + "TF.amount, "
+                    + "C.name "
+                    + "from " + tableFact + " as TF "
+                    + "inner join categories as C "
+                    + "on TF.category = C._id "
+                    + "where direction = ? and date between ? and ? )t group by category", new String[] {"-", startDate, endDate, "-",startDate, endDate});
+
+        return cursor;
+    }
 }

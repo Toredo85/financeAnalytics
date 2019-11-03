@@ -117,7 +117,7 @@ public class EnterOperationActivity extends AppCompatActivity implements View.On
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-M-d");
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
                 dateOperation = sdf.format(sDate);
 
@@ -169,7 +169,7 @@ public class EnterOperationActivity extends AppCompatActivity implements View.On
             myYear = year;
             myMonth = monthOfYear + 1;
             myDay = dayOfMonth;
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-M-d");
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             Date selectDate = null;
             try {
                 selectDate = sdf.parse("" + myYear + "-" + myMonth + "-" + myDay);

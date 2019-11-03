@@ -107,7 +107,9 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin">
 
                 <com.github.mikephil.charting.charts.PieChart
                     android:id="@+id/chart1"
@@ -115,6 +117,11 @@
                     android:layout_height="400dp"
                     android:layout_above="@+id/seekBar1" />
 
+                <com.github.mikephil.charting.charts.CombinedChart
+                    android:id="@+id/chart2"
+                    android:layout_width="match_parent"
+                    android:layout_height="400dp"
+                    android:layout_above="@+id/seekBar1" />
             </LinearLayout>
 
         </LinearLayout>
