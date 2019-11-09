@@ -1,6 +1,8 @@
 package com.Bogatnov.financeanalytix.Adapters;
 
+import android.content.Intent;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,7 +14,10 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.Bogatnov.financeanalytix.DBActions;
+import com.Bogatnov.financeanalytix.Diagrams.MyValueFormatter;
+import com.Bogatnov.financeanalytix.EnterOperationActivity;
 import com.Bogatnov.financeanalytix.Entity.Operation;
+import com.Bogatnov.financeanalytix.MenuApp;
 import com.Bogatnov.financeanalytix.R;
 
 import java.text.ParseException;
@@ -25,9 +30,11 @@ import java.util.List;
 public class OperationAdapter  extends RecyclerView.Adapter<OperationAdapter.OperationViewHolder> {
 
     private static final int CM_DELETE_ID = 1;
+    private static final int CM_EDIT_ID = 2;
     private List<Operation> operationList = new ArrayList<>();
     private OperationAdapter.OnOperationClickListener onOperationClickListener;
     private int position;
+    private static final MyValueFormatter mvf = new MyValueFormatter("р.");
 
     public OperationAdapter(OperationAdapter.OnOperationClickListener onOperationClickListener) {
         this.onOperationClickListener = onOperationClickListener;
@@ -79,7 +86,7 @@ public class OperationAdapter  extends RecyclerView.Adapter<OperationAdapter.Ope
             categoryTextView = itemView.findViewById(R.id.category);
             colorOperation = itemView.findViewById(R.id.color_operation);
             dateTextView = itemView.findViewById(R.id.date);
-            directionTextView = itemView.findViewById(R.id.direction);
+            //directionTextView = itemView.findViewById(R.id.direction);
             amountTextView = itemView.findViewById(R.id.amount);
 
             itemView.setOnClickListener(new View.OnClickListener() {
@@ -108,19 +115,19 @@ public class OperationAdapter  extends RecyclerView.Adapter<OperationAdapter.Ope
 
             dateTextView.setText(dateOperation);
             String direct = String.valueOf(operation.getDirection());
-            directionTextView.setText(direct);
+//            directionTextView.setText(direct);
             if (direct.equals("+")) {
-                amountTextView.setText(String.valueOf(operation.getAmount()));
+                amountTextView.setText(mvf.getFormattedValue((float) operation.getAmount()));
             } else {
-                amountTextView.setText("-" + String.valueOf(operation.getAmount()));
+                amountTextView.setText("-" + mvf.getFormattedValue((float) operation.getAmount()));
             }
 
             if (direct.equals("-")) {
-                directionTextView.setTextColor(Color.RED);
+                //directionTextView.setTextColor(Color.RED);
                 amountTextView.setTextColor(Color.RED);
                 }
             if (direct.equals("+")) {
-                directionTextView.setTextColor(Color.GREEN);
+                //directionTextView.setTextColor(Color.GREEN);
                 amountTextView.setTextColor(Color.GREEN);
                 }
             if (!operation.getCategory().getColor().isEmpty()){
@@ -132,6 +139,7 @@ public class OperationAdapter  extends RecyclerView.Adapter<OperationAdapter.Ope
         public void onCreateContextMenu(ContextMenu menu, View v,
                                         ContextMenu.ContextMenuInfo menuInfo) {
             menu.add(0, CM_DELETE_ID, 0, R.string.delete_record);
+            menu.add(0, CM_EDIT_ID, 0, R.string.edit_record);
         }
     }
     public void setItems(Collection<Operation> operations) {
@@ -149,6 +157,11 @@ public class OperationAdapter  extends RecyclerView.Adapter<OperationAdapter.Ope
         Operation operation = operationList.get(position);
         db.delOperation(operation.getId(), "cashmove");
         notifyDataSetChanged();
+    }
+
+    public Operation editItem(int position, DBActions db){
+        Log.i("Selected position " + position,"nothing selected");
+        return operationList.get(position);
     }
 
     public interface OnOperationClickListener {

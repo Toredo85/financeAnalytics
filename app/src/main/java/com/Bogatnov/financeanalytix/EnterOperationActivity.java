@@ -18,6 +18,10 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.Bogatnov.financeanalytix.Diagrams.MyValueFormatter;
+import com.Bogatnov.financeanalytix.Entity.Category;
+import com.Bogatnov.financeanalytix.Entity.Operation;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -40,6 +44,7 @@ public class EnterOperationActivity extends AppCompatActivity implements View.On
     int myMonth = 1;
     int myDay = 1;
     String[] data = {"Приход", "Расход"};
+    Intent thisIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,6 +101,31 @@ public class EnterOperationActivity extends AppCompatActivity implements View.On
             public void onNothingSelected(AdapterView<?> arg0) {
             }
         });
+        thisIntent = getIntent();
+        if (thisIntent.hasExtra("_ID")) {
+            Operation operation = db.getOperationById(thisIntent.getIntExtra("_ID",0));
+            categoryText.setText(operation.getCategory().getName());
+            categoryId = operation.getCategory().getId();
+            amount.setText(String.valueOf(operation.getAmount()));
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            Date selectDate = null;
+            try {
+                selectDate = sdf.parse(operation.getDate());
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            SimpleDateFormat sdfOut = new SimpleDateFormat("dd.MM.yyyy");
+
+            date.setText(sdfOut.format(selectDate));
+            String currentDirection = operation.getDirection();
+            if (currentDirection.equals("+"))
+            spinner.setSelection(0);
+            else spinner.setSelection(1);
+            addButton.setText("Готово");
+        }
+        else {
+
+        }
     }
 
     @Override
@@ -124,7 +154,12 @@ public class EnterOperationActivity extends AppCompatActivity implements View.On
                 //categoryId = Integer.valueOf(categoryIdView.getText().toString());
 
                 // вставляем запись и получаем ее ID
-                db.addOperation(direction, categoryId, amountValue, dateOperation, table);
+                if (thisIntent.hasExtra("_ID")) {
+                    db.updateOperation(thisIntent.getIntExtra("_ID", 0), direction, categoryId, amountValue, dateOperation, table);
+                }
+                else {
+                    db.addOperation(direction, categoryId, amountValue, dateOperation, table);
+                }
                 Intent intent;
                 if (table.equals("cashmove")) {
                     intent = new Intent(this, OperationListActivity.class);

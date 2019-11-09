@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.Bogatnov.financeanalytix.Entity.Category;
+import com.Bogatnov.financeanalytix.Entity.Operation;
 
 public class DBActions {
     private static final String DB_NAME = "fanalytixDB";
@@ -82,7 +83,15 @@ public class DBActions {
 
         mDB.insert(table, null, cv);
     }
+    public void updateOperation(long id, String direction, int categoryId, String amount, String date, String table) {
+        ContentValues cv = new ContentValues();
+        cv.put(COLUMN_DIRECTION, direction);
+        cv.put(COLUMN_CATEGORY_ID, categoryId);
+        cv.put(COLUMN_AMOUNT, amount);
+        cv.put(COLUMN_DATE, date);
 
+        mDB.update(table, cv,COLUMN_ID + " = " + id, null);
+    }
     // удалить запись из DB_TABLE
     public void delCategory(long id) {
         mDB.delete(DB_TABLE_CATEGORIES, COLUMN_ID + " = " + id, null);
@@ -90,7 +99,6 @@ public class DBActions {
 
     // получить запись из DB_TABLE
     public Category getCategory(long id) {
-        Category category = new Category(0,"","");
         String selection = "_id = ?";
         String[] selectionArgs = new String[] { String.valueOf(id) };
         Cursor c = mDB.query(DB_TABLE_CATEGORIES, null, selection, selectionArgs, null, null, null);
@@ -102,6 +110,23 @@ public class DBActions {
             return new Category(categoryId,categoryName,categoryColor);
         }
         return new Category(0,"","");
+    }
+
+    // получить запись из DB_TABLE
+    public Operation getOperationById(long id) {
+        String selection = "_id = ?";
+        String[] selectionArgs = new String[] { String.valueOf(id) };
+        Cursor c = mDB.query(DB_TABLE_OPERATIONS, null, selection, selectionArgs, null, null, null);
+        if (c.moveToFirst()){
+            int operationId = (c.getInt(c.getColumnIndex("_id")));
+            String operationDate = (c.getString(c.getColumnIndex("date")));
+            long categoryId = (c.getLong(c.getColumnIndex("category")));
+            String operationDirection = (c.getString(c.getColumnIndex("direction")));
+            Double operationAmount = (c.getDouble(c.getColumnIndex("amount")));
+
+            return new Operation(operationId, operationDate, operationDirection,getCategory(categoryId), operationAmount);
+        }
+        return new Operation();
     }
 
     // изменить запись из DB_TABLE
@@ -133,6 +158,7 @@ public class DBActions {
         }
         return Double.valueOf(0);
     }
+
     public Double getExpenses(String startMonthDate, String currentDate, String table) {
 
         Cursor cursor = mDB.rawQuery("Select sum(amount) as expenses from " + table + " where direction = ? and date between ? and ?", new String[] {"-", startMonthDate, currentDate});
@@ -167,6 +193,7 @@ public class DBActions {
 
         return cursor;
     }
+
     public Cursor getExpensesForMonth(String startDate, String endDate, String tableBudget, String tableFact) {
 
         Cursor cursor = mDB.rawQuery(

@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.Bogatnov.financeanalytix.DBActions;
+import com.Bogatnov.financeanalytix.Diagrams.MyValueFormatter;
 import com.Bogatnov.financeanalytix.Entity.Operation;
 import com.Bogatnov.financeanalytix.R;
 
@@ -28,6 +29,7 @@ public class BudgetOperationAdapter extends RecyclerView.Adapter<BudgetOperation
     private List<Operation> operationList = new ArrayList<>();
     private BudgetOperationAdapter.OnOperationClickListener onOperationClickListener;
     private int position;
+    private static final MyValueFormatter mvf = new MyValueFormatter("р.");
 
     public BudgetOperationAdapter(BudgetOperationAdapter.OnOperationClickListener onOperationClickListener) {
         this.onOperationClickListener = onOperationClickListener;
@@ -80,7 +82,7 @@ public class BudgetOperationAdapter extends RecyclerView.Adapter<BudgetOperation
             categoryTextView = itemView.findViewById(R.id.category);
             colorOperation = itemView.findViewById(R.id.color_operation);
             dateTextView = itemView.findViewById(R.id.date);
-            directionTextView = itemView.findViewById(R.id.direction);
+            //directionTextView = itemView.findViewById(R.id.direction);
             amountTextView = itemView.findViewById(R.id.amount);
 
             itemView.setOnClickListener(new View.OnClickListener() {
@@ -110,9 +112,9 @@ public class BudgetOperationAdapter extends RecyclerView.Adapter<BudgetOperation
             String direct = String.valueOf(operation.getDirection());
             directionTextView.setText(direct);
             if (direct.equals("+")) {
-                amountTextView.setText(String.valueOf(operation.getAmount()));
+                amountTextView.setText(mvf.getFormattedValue((float) operation.getAmount()));
             } else {
-                amountTextView.setText("-" + String.valueOf(operation.getAmount()));
+                amountTextView.setText("-" + mvf.getFormattedValue((float) operation.getAmount()));
             }
 
             if (direct.equals("-")) {

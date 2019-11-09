@@ -2,10 +2,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp"
-        android:orientation="horizontal">
+    android:layout_height="35dp"
+    android:layout_marginTop="5dp"
+    android:layout_marginBottom="5dp"
+    android:orientation="horizontal">
 
         <LinearLayout
             android:id="@+id/color_operation"
@@ -15,24 +15,11 @@
             android:orientation="vertical"></LinearLayout>
 
         <TextView
-            android:id="@+id/direction"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="casual"
-            android:paddingLeft="@dimen/padding_small"
-            android:paddingRight="@dimen/padding_small"
-            android:text="@string/direction_minus"
-            android:textAlignment="center"
-            android:textAllCaps="false"
-            android:textColor="@android:color/holo_red_dark"
-            android:textSize="24sp"
-            android:textStyle="bold" />
-
-        <TextView
             android:id="@+id/category"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:paddingLeft="@dimen/nav_header_vertical_spacing"
             android:text="Категория"
             app:autoSizeMaxTextSize="@dimen/EditText"
             app:autoSizeMinTextSize="8sp"

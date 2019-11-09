@@ -2,6 +2,7 @@ package com.Bogatnov.financeanalytix;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.media.VolumeShaper;
 import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.Menu;
@@ -38,6 +39,7 @@ public class OperationListActivity extends AppCompatActivity implements View.OnC
 
     final String LOG_TAG = "myLogs";
     private static final int CM_DELETE_ID = 1;
+    private static final int CM_EDIT_ID = 2;
     Intent thisIntent;
     String factTable = "cashmove";
     DBActions db;
@@ -139,6 +141,22 @@ public class OperationListActivity extends AppCompatActivity implements View.OnC
             operationAdapter.deleteItem(position, db);
             operationAdapter.clearItems();
             loadOperations();
+            return true;
+
+        }
+        if (item.getItemId() == CM_EDIT_ID) {
+            int position;
+            try {
+                position = operationAdapter.getPosition();
+            } catch (Exception e) {
+                return super.onContextItemSelected(item);
+            }
+
+            Operation operation = operationAdapter.editItem(position, db);
+            Intent intent = new Intent(this, EnterOperationActivity.class);
+            intent.putExtra("_ID", operation.getId());
+            intent.putExtra("table", "cashmove");
+            startActivity(intent);
             return true;
         }
         return super.onContextItemSelected(item);

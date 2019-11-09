@@ -144,7 +144,7 @@ public class PieDiagram implements OnChartValueSelectedListener {
 
     private void setData(ArrayList<String> parties, ArrayList<PieEntry> entries) {
 
-        PieDataSet dataSet = new PieDataSet(entries, "фактические расходы");
+        PieDataSet dataSet = new PieDataSet(entries, null);
         dataSet.setDrawIcons(false);
         dataSet.setSliceSpace(3f);
         dataSet.setIconsOffset(new MPPointF(0, 40));

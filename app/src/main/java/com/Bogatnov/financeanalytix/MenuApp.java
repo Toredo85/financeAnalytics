@@ -95,9 +95,10 @@ public class MenuApp extends AppCompatActivity
         currentDate = currentDate + "-" + myDay;}
 
        // balance.setText(String.format("%10.2f",db.getBalance(currentDate)));
-        balance.setText(new MyValueFormatter("р.").getFormattedValue(db.getBalance(currentDate).floatValue()));
-        expreses.setText(new MyValueFormatter("р.").getFormattedValue(db.getExpenses(startMonth, currentDate, "cashmove").floatValue()));
-        planExpresses.setText(new MyValueFormatter("р.").getFormattedValue(db.getExpenses(startMonth, currentDate, "budgetoperations").floatValue()));
+        MyValueFormatter mvf = new MyValueFormatter("р.");
+        balance.setText(mvf.getFormattedValue(db.getBalance(currentDate).floatValue()));
+        expreses.setText(mvf.getFormattedValue(db.getExpenses(startMonth, currentDate, "cashmove").floatValue()));
+        planExpresses.setText(mvf.getFormattedValue(db.getExpenses(startMonth, currentDate, "budgetoperations").floatValue()));
 
         //Diagrams
         chart = findViewById(R.id.chart1);
