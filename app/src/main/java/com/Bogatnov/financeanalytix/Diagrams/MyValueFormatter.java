@@ -41,4 +41,34 @@ public class MyValueFormatter extends ValueFormatter{
             return mFormat.format(value);
         }
     }
+
+    public String getMonthText(String value) {
+
+        if (value.equals("01")) {
+            return "Январь";
+        } else if (value.equals("02")) {
+            return "Февраль";
+        } else if (value.equals("03")) {
+            return "Март";
+        } else if (value.equals("04")) {
+            return "Апрель";
+        } else if (value.equals("05")) {
+            return "Май";
+        } else if (value.equals("06")) {
+            return "Июнь";
+        } else if (value.equals("07")) {
+            return "Июль";
+        } else if (value.equals("08")) {
+            return "Август";
+        } else if (value.equals("09")) {
+            return "Сентябрь";
+        } else if (value.equals("10")) {
+            return "Октябрь";
+        } else if (value.equals("11")) {
+            return "Ноябрь";
+        } else if (value.equals("12")) {
+            return "Декабрь";
+        }
+        return "Месяц не определен";
+    }
 }

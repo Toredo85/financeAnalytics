@@ -17,8 +17,9 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.Bogatnov.financeanalytix.Adapters.BudgetMonthAdapter;
 import com.Bogatnov.financeanalytix.Adapters.BudgetOperationAdapter;
-import com.Bogatnov.financeanalytix.Adapters.PlanOperationAdapter;
+import com.Bogatnov.financeanalytix.Adapters.BudgetYearAdapter;
 import com.Bogatnov.financeanalytix.Entity.Category;
 import com.Bogatnov.financeanalytix.Entity.Operation;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -36,6 +37,8 @@ public class BudgetOperationListActivity extends AppCompatActivity implements Vi
     DBActions db;
     private RecyclerView operationsRecyclerView;
     private BudgetOperationAdapter operationAdapter;
+    private BudgetYearAdapter yearAdapter;
+    private BudgetMonthAdapter monthAdapter;
 
     private void initRecyclerView() {
         operationsRecyclerView = findViewById(R.id.operation_recycler_view);
@@ -43,18 +46,53 @@ public class BudgetOperationListActivity extends AppCompatActivity implements Vi
         BudgetOperationAdapter.OnOperationClickListener onOperationClickListener = new BudgetOperationAdapter.OnOperationClickListener() {
             @Override
             public void onOperationClick(Operation operation) {
-
             }
-
-            };
+        };
         operationAdapter = new BudgetOperationAdapter(onOperationClickListener);
         operationsRecyclerView.setAdapter(operationAdapter);
         registerForContextMenu(operationsRecyclerView);
     }
+
+    private void initRecyclerMonthView() {
+        operationsRecyclerView = findViewById(R.id.operation_recycler_view);
+        operationsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        BudgetMonthAdapter.OnMonthClickListener onMonthClickListener = new BudgetMonthAdapter.OnMonthClickListener() {
+            @Override
+            public void onMonthClick(String month, BudgetOperationListActivity activityIntent) {
+                Intent intent = new Intent(activityIntent, BudgetOperationListActivity.class);
+                intent.putExtra("month", month);
+                startActivity(intent);
+            }
+
+        };
+        monthAdapter = new BudgetMonthAdapter(onMonthClickListener, this);
+        operationsRecyclerView.setAdapter(monthAdapter);
+        registerForContextMenu(operationsRecyclerView);
+    }
+
+    private void initRecyclerYearView() {
+        operationsRecyclerView = findViewById(R.id.operation_recycler_view);
+        operationsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        BudgetYearAdapter.OnYearClickListener onYearClickListener = new BudgetYearAdapter.OnYearClickListener() {
+            @Override
+            public void onYearClick(String year, BudgetOperationListActivity activityIntent) {
+                Intent intent = new Intent(activityIntent, BudgetOperationListActivity.class);
+                intent.putExtra("year", year);
+                startActivity(intent);
+            }
+
+        };
+        yearAdapter = new BudgetYearAdapter(onYearClickListener, this);
+        operationsRecyclerView.setAdapter(yearAdapter);
+        registerForContextMenu(operationsRecyclerView);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.operation_list);
+
+        thisIntent = getIntent();
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -72,18 +110,67 @@ public class BudgetOperationListActivity extends AppCompatActivity implements Vi
         // открываем подключение к БД
         db = new DBActions(this);
         db.open();
-
-        initRecyclerView();
-        loadOperations();
+        if (thisIntent.hasExtra("year")){
+            initRecyclerMonthView();
+            loadMonthOperations(thisIntent.getStringExtra("year"));
+        }
+        else if (thisIntent.hasExtra("month")) {
+            initRecyclerView();
+            loadOperations(thisIntent.getStringExtra("month"));
+        }
+        else {
+            initRecyclerYearView();
+            loadYearOperations();
+        }
     }
-    private void loadOperations() {
-        Collection<Operation> operations = getOperations();
+
+    private void loadOperations(String month) {
+        Collection<Operation> operations = getOperations(month);
         operationAdapter.setItems(operations);
     }
 
-    private Collection<Operation> getOperations() {
+    private void loadMonthOperations(String year) {
+        Collection<String> months = getMonths(year);
+        monthAdapter.setItems(months);
+    }
 
-        Cursor cursor = db.getAllDataOperations(planTable);
+    private void loadYearOperations() {
+        Collection<String> years = getYears();
+        yearAdapter.setItems(years);
+    }
+
+    private Collection<String> getMonths(String year) {
+
+        Cursor cursor = db.getAllMonthsOperations(planTable, year);
+        ArrayList monthsArray = new ArrayList<String>();
+        if(cursor.moveToFirst()) {
+            do {
+                String idDate = cursor.getString(cursor.getColumnIndex("date"));
+                monthsArray.add(idDate);
+
+            } while (cursor.moveToNext());
+        }
+        return monthsArray;
+    }
+
+    private Collection<String> getYears() {
+
+        Cursor cursor = db.getAllYearsOperations(planTable);
+        ArrayList yearsArray = new ArrayList<String>();
+        if(cursor.moveToFirst()) {
+            do {
+                String idDate = cursor.getString(cursor.getColumnIndex("date"));
+                yearsArray.add(idDate);
+
+            } while (cursor.moveToNext());
+        }
+        return yearsArray;
+    }
+
+
+    private Collection<Operation> getOperations(String month) {
+
+        Cursor cursor = db.getAllOperationsForMonth(planTable, month);
         ArrayList operationsArray = new ArrayList<Operation>();
         if(cursor.moveToFirst()) {
             do {
@@ -131,7 +218,19 @@ public class BudgetOperationListActivity extends AppCompatActivity implements Vi
 
             operationAdapter.deleteItem(position, db);
             operationAdapter.clearItems();
-            loadOperations();
+            if (thisIntent.hasExtra("year")){
+                initRecyclerMonthView();
+                loadMonthOperations(thisIntent.getStringExtra("year"));
+            }
+            if (thisIntent.hasExtra("month")) {
+                loadOperations(thisIntent.getStringExtra("month"));
+
+            }
+            else {
+                initRecyclerYearView();
+                loadYearOperations();
+            }
+
             return true;
         }
         return super.onContextItemSelected(item);

@@ -31,6 +31,7 @@ public class PlanOperationListActivity extends AppCompatActivity implements View
 
     final String LOG_TAG = "myLogs";
     private static final int CM_DELETE_ID = 1;
+    private static final int CM_EDIT_ID = 2;
     Intent thisIntent;
     String planTable = "plancashmove";
     DBActions db;
@@ -135,6 +136,22 @@ public class PlanOperationListActivity extends AppCompatActivity implements View
             loadOperations();
             return true;
         }
+        if (item.getItemId() == CM_EDIT_ID) {
+            int position;
+            try {
+                position = operationAdapter.getPosition();
+            } catch (Exception e) {
+                return super.onContextItemSelected(item);
+            }
+
+            Operation operation = operationAdapter.editItem(position, db);
+            Intent intent = new Intent(this, EnterOperationActivity.class);
+            intent.putExtra("_ID", operation.getId());
+            intent.putExtra("table", "plancashmove");
+            startActivity(intent);
+            return true;
+        }
+
         return super.onContextItemSelected(item);
     }
 

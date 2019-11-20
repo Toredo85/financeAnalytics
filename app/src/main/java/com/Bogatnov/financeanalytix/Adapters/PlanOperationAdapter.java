@@ -1,6 +1,7 @@
 package com.Bogatnov.financeanalytix.Adapters;
 
 import android.graphics.Color;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,6 +27,7 @@ import java.util.List;
 public class PlanOperationAdapter extends RecyclerView.Adapter<PlanOperationAdapter.OperationViewHolder> {
 
     private static final int CM_DELETE_ID = 1;
+    private static final int CM_EDIT_ID = 2;
     private List<Operation> operationList = new ArrayList<>();
     private PlanOperationAdapter.OnOperationClickListener onOperationClickListener;
     private int position;
@@ -110,7 +112,7 @@ public class PlanOperationAdapter extends RecyclerView.Adapter<PlanOperationAdap
             }
             dateTextView.setText(dateOperation);
             String direct = String.valueOf(operation.getDirection());
-            directionTextView.setText(direct);
+            //directionTextView.setText(direct);
             if (direct.equals("+")) {
                 amountTextView.setText(mvf.getFormattedValue((float) operation.getAmount()));
             } else {
@@ -118,11 +120,11 @@ public class PlanOperationAdapter extends RecyclerView.Adapter<PlanOperationAdap
             }
 
             if (direct.equals("-")) {
-                directionTextView.setTextColor(Color.RED);
+                //directionTextView.setTextColor(Color.RED);
                 amountTextView.setTextColor(Color.RED);
                 }
             if (direct.equals("+")) {
-                directionTextView.setTextColor(Color.GREEN);
+                //directionTextView.setTextColor(Color.GREEN);
                 amountTextView.setTextColor(Color.GREEN);
                 }
             if (!operation.getCategory().getColor().isEmpty()){
@@ -133,6 +135,7 @@ public class PlanOperationAdapter extends RecyclerView.Adapter<PlanOperationAdap
         public void onCreateContextMenu(ContextMenu menu, View v,
                                         ContextMenu.ContextMenuInfo menuInfo) {
             menu.add(0, CM_DELETE_ID, 0, R.string.delete_record);
+            menu.add(0, CM_EDIT_ID, 0, R.string.edit_record);
         }
     }
     public void setItems(Collection<Operation> operations) {
@@ -152,9 +155,15 @@ public class PlanOperationAdapter extends RecyclerView.Adapter<PlanOperationAdap
         notifyDataSetChanged();
     }
 
+    public Operation editItem(int position, DBActions db){
+        Log.i("Selected position " + position,"nothing selected");
+        return operationList.get(position);
+    }
+
     public interface OnOperationClickListener {
         void onOperationClick(Operation operation);
     }
+
     public int getPosition() {
         return position;
     }

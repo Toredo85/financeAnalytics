@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
+    <color name="colorPrimary">#43a047</color>
+    <color name="colorPrimaryDark">#1b5e20</color>
+    <color name="colorAccent">#ffeb3b</color>
     <string-array name="category_colors">
-        <item>#DC143C</item>
-        <item>#32CD32</item>
+        <item>#f44336</item>
+        <item>#cddc39</item>
         <item>#20B2AA</item>
-        <item>#C71585</item>
-        <item>#FF4500</item>
+        <item>#ab47bc</item>
+        <item>#ff7043</item>
 
-        <item>#FFD700</item>
+        <item>#ffeb3b</item>
        <!--<item>#8FBC8F</item>-->
-        <item>#00008B</item>
-        <item>#483D8B</item>
-        <item>#800000</item>
+        <item>#3f51b5</item>
+        <item>#757575</item>
+        <item>#8d6e63</item>
     </string-array>
 </resources>

@@ -103,7 +103,7 @@ public class EnterOperationActivity extends AppCompatActivity implements View.On
         });
         thisIntent = getIntent();
         if (thisIntent.hasExtra("_ID")) {
-            Operation operation = db.getOperationById(thisIntent.getIntExtra("_ID",0));
+            Operation operation = db.getOperationById(thisIntent.getIntExtra("_ID",0), table);
             categoryText.setText(operation.getCategory().getName());
             categoryId = operation.getCategory().getId();
             amount.setText(String.valueOf(operation.getAmount()));

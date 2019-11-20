@@ -167,6 +167,7 @@ public class OperationAdapter  extends RecyclerView.Adapter<OperationAdapter.Ope
     public interface OnOperationClickListener {
         void onOperationClick(Operation operation);
     }
+
     public int getPosition() {
         return position;
     }

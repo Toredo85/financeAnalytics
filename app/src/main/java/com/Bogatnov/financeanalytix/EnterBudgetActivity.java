@@ -121,7 +121,7 @@ public class EnterBudgetActivity extends AppCompatActivity implements View.OnCli
                 db.addOperation(direction, categoryId, amountValue, dateOperation, "budgetoperations");
                 Intent intent;
                 intent = new Intent(this, BudgetOperationListActivity.class);
-
+                intent.putExtra("month", dateOperation.substring(5,7));
                 startActivity(intent);
                 break;
                 default:

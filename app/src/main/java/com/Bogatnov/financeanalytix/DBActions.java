@@ -50,6 +50,7 @@ public class DBActions {
     public Cursor getEmptyCursor() {
         return mDB.rawQuery("Select null from category where false", null);
     }
+
     public Cursor getAllDataOperations(String table) {
         String sqlQuery = "select "
                 + "CM._id as _id,"
@@ -62,6 +63,44 @@ public class DBActions {
                 + "from " + table + " as CM "
                 + "inner join categories as C "
                 + "on CM.category = C._id "
+                + "order by date";
+        return mDB.rawQuery(sqlQuery, null);
+    }
+
+    public Cursor getAllOperationsForMonth(String table, String month) {
+        String sqlQuery = "select "
+                + "CM._id as _id,"
+                + "CM.date as date, "
+                + "CM.category as categoryid, "
+                + "CM.direction as direction,"
+                + "CM.amount as amount, "
+                + "C.name as categoryname, "
+                + "C.color as color "
+                + "from " + table + " as CM "
+                + "inner join categories as C "
+                + "on CM.category = C._id "
+                + "where CM.date like '%-" + month + "-%' "
+                + "order by date";
+        return mDB.rawQuery(sqlQuery, null);
+    }
+
+    public Cursor getAllYearsOperations(String table) {
+        String sqlQuery = "select "
+                + "substr(CM.date,1,4) as date, "
+                + "SUM(CM.amount) as amount "
+                + "from " + table + " as CM "
+                + "group by substr(date,1,4)"
+                + "order by date";
+        return mDB.rawQuery(sqlQuery, null);
+    }
+
+    public Cursor getAllMonthsOperations(String table, String year) {
+        String sqlQuery = "select "
+                + "substr(CM.date,6,2) as date, "
+                + "SUM(CM.amount) as amount "
+                + "from " + table + " as CM "
+                + "where CM.date like '" + year + "-%' "
+                + "group by substr(date,6,2)"
                 + "order by date";
         return mDB.rawQuery(sqlQuery, null);
     }
@@ -113,10 +152,10 @@ public class DBActions {
     }
 
     // получить запись из DB_TABLE
-    public Operation getOperationById(long id) {
+    public Operation getOperationById(long id, String table) {
         String selection = "_id = ?";
         String[] selectionArgs = new String[] { String.valueOf(id) };
-        Cursor c = mDB.query(DB_TABLE_OPERATIONS, null, selection, selectionArgs, null, null, null);
+        Cursor c = mDB.query(table, null, selection, selectionArgs, null, null, null);
         if (c.moveToFirst()){
             int operationId = (c.getInt(c.getColumnIndex("_id")));
             String operationDate = (c.getString(c.getColumnIndex("date")));
@@ -139,6 +178,14 @@ public class DBActions {
     // удалить операцию
     public void delOperation(long id, String table) {
         mDB.delete(table, COLUMN_ID + " = " + id, null);
+    }
+    // удалить операции за месяц
+    public void delMonth(String month, String table) {
+        mDB.delete(table, "date like %." + month + ".%", null);
+    }
+    // удалить операции за год
+    public void delYear(String year, String table) {
+        mDB.delete(table, "date like %" + year + ".%", null);
     }
 
     public Double getBalance(String currentDate) {

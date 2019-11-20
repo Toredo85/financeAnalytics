@@ -110,7 +110,7 @@ public class BudgetOperationAdapter extends RecyclerView.Adapter<BudgetOperation
             }
             dateTextView.setText(dateOperation);
             String direct = String.valueOf(operation.getDirection());
-            directionTextView.setText(direct);
+//            directionTextView.setText(direct);
             if (direct.equals("+")) {
                 amountTextView.setText(mvf.getFormattedValue((float) operation.getAmount()));
             } else {
@@ -118,11 +118,11 @@ public class BudgetOperationAdapter extends RecyclerView.Adapter<BudgetOperation
             }
 
             if (direct.equals("-")) {
-                directionTextView.setTextColor(Color.RED);
+               // directionTextView.setTextColor(Color.RED);
                 amountTextView.setTextColor(Color.RED);
                 }
             if (direct.equals("+")) {
-                directionTextView.setTextColor(Color.GREEN);
+              //  directionTextView.setTextColor(Color.GREEN);
                 amountTextView.setTextColor(Color.GREEN);
                 }
             if (!operation.getCategory().getColor().isEmpty()){
