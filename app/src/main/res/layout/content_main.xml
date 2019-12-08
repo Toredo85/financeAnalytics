@@ -79,7 +79,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/padding_small">
 
                 <TextView
                     android:layout_width="0dp"
@@ -106,33 +107,42 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center_horizontal"
+                android:layout_height="wrap_content"
+                android:background="#E4E4E4"
                 android:orientation="horizontal"
-                android:paddingTop="10dp">
+                android:padding="2dp">
 
-                <Button
-                    android:id="@+id/month_left"
-                    android:layout_width="40dp"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@android:drawable/ic_media_previous" />
+                    android:background="@android:color/background_light"
+                    android:gravity="center_horizontal"
+                    android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/current_period"
-                    android:layout_width="170dp"
-                    android:layout_height="wrap_content"
-                    android:text="Декабрь 2019"
-                    android:textAlignment="center"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
+                    <Button
+                        android:id="@+id/month_left"
+                        android:layout_width="40dp"
+                        android:layout_height="wrap_content"
+                        android:background="@android:drawable/ic_media_previous" />
 
-                <Button
-                    android:id="@+id/month_right"
-                    android:layout_width="40dp"
-                    android:layout_height="wrap_content"
-                    android:background="@android:drawable/ic_media_next" />
+                    <TextView
+                        android:id="@+id/current_period"
+                        android:layout_width="170dp"
+                        android:layout_height="wrap_content"
+                        android:text="Декабрь 2019"
+                        android:textAlignment="center"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <Button
+                        android:id="@+id/month_right"
+                        android:layout_width="40dp"
+                        android:layout_height="wrap_content"
+                        android:background="@android:drawable/ic_media_next" />
+                </LinearLayout>
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

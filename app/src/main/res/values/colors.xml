@@ -2,7 +2,7 @@
 <resources>
     <color name="colorPrimary">#43A047</color>
     <color name="colorPrimaryDark">#1b5e20</color>
-    <color name="colorAccent">#ffeb3b</color>
+    <color name="colorAccent">#FFEB3B</color>
     <string-array name="category_colors">
         <item>#f44336</item>
         <item>#cddc39</item>

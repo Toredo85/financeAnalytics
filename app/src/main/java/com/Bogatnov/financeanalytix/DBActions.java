@@ -67,7 +67,7 @@ public class DBActions {
         return mDB.rawQuery(sqlQuery, null);
     }
 
-    public Cursor getAllDataOperationsByCategoryName(String table, String categoryName) {
+    public Cursor getAllDataOperationsByCategoryName(String table, String categoryName, String startDate, String endDate) {
         String sqlQuery = "select "
                 + "CM._id as _id,"
                 + "CM.date as date, "
@@ -79,9 +79,9 @@ public class DBActions {
                 + "from " + table + " as CM "
                 + "inner join categories as C "
                 + "on CM.category = C._id "
-                + "where C.name = ? "
+                + "where C.name = ? and CM.date between ? and ?"
                 + "order by date";
-        return mDB.rawQuery(sqlQuery, new String[]{categoryName});
+        return mDB.rawQuery(sqlQuery, new String[]{categoryName, startDate, endDate});
     }
 
     public Cursor getAllOperationsForMonth(String table, String month) {

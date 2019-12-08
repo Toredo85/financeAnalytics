@@ -31,6 +31,8 @@ import java.util.ArrayList;
 public class PieDiagram implements OnChartValueSelectedListener {
     private PieChart chart;
     Context activity;
+    String startDate;
+    String endDate;
 
     public PieDiagram(PieChart chart){ this.chart = chart;}
 
@@ -78,7 +80,8 @@ public class PieDiagram implements OnChartValueSelectedListener {
     }
 
     public void onShowExpences(DBActions db, String table, String startDate, String endDate) {
-
+        this.startDate = startDate;
+        this.endDate = endDate;
         ArrayList<String> parties = new ArrayList<>();
         ArrayList<PieEntry> entries = new ArrayList<>();
 
@@ -139,6 +142,8 @@ public class PieDiagram implements OnChartValueSelectedListener {
 
         Intent intent = new Intent(activity, OperationListActivity.class);
         intent.putExtra("filter", String.valueOf(pieEntry.getLabel()));
+        intent.putExtra("startdate", startDate);
+        intent.putExtra("enddate", endDate);
         activity.startActivity(intent);
 
 

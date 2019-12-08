@@ -87,7 +87,9 @@ public class OperationListActivity extends AppCompatActivity implements View.OnC
         Intent intent = getIntent();
         if (intent.hasExtra("filter")) {
             String filter = intent.getStringExtra("filter");
-            loadOperationsByCategoryName(filter);
+            String startDate = intent.getStringExtra("startdate");
+            String endDate = intent.getStringExtra("enddate");
+            loadOperationsByCategoryName(filter, startDate, endDate);
         }
         else {
             loadOperations();
@@ -98,8 +100,8 @@ public class OperationListActivity extends AppCompatActivity implements View.OnC
         operationAdapter.setItems(operations);
     }
 
-    private void loadOperationsByCategoryName(String categoryName) {
-        Collection<Operation> operations = getOperationsByCategoryName(categoryName);
+    private void loadOperationsByCategoryName(String categoryName, String startDate, String endDate) {
+        Collection<Operation> operations = getOperationsByCategoryName(categoryName, startDate, endDate);
         operationAdapter.setItems(operations);
     }
 
@@ -126,8 +128,8 @@ public class OperationListActivity extends AppCompatActivity implements View.OnC
         return operationsArray;
     }
 
-    private Collection<Operation> getOperationsByCategoryName(String categoryName) {
-        Cursor cursor = db.getAllDataOperationsByCategoryName(factTable, categoryName);
+    private Collection<Operation> getOperationsByCategoryName(String categoryName, String startDate, String endDate) {
+        Cursor cursor = db.getAllDataOperationsByCategoryName(factTable, categoryName, startDate, endDate);
         ArrayList operationsArray = new ArrayList<Operation>();
         if(cursor.moveToFirst()) {
             do {
