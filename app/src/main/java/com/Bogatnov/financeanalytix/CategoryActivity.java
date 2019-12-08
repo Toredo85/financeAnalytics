@@ -12,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.TextView;
 
 import com.Bogatnov.financeanalytix.Adapters.ColorGridAdapter;
 import com.Bogatnov.financeanalytix.Entity.Category;
@@ -28,6 +29,7 @@ public class CategoryActivity extends AppCompatActivity implements OnClickListen
     ArrayAdapter<String> gridColorAdapter;
     Button previousSelectedButton;
     Intent thisIntent;
+    TextView errText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +37,7 @@ public class CategoryActivity extends AppCompatActivity implements OnClickListen
         setContentView(R.layout.activity_category);
         Button addButton = (Button) findViewById(R.id.add_button);
         categoryText = (EditText) findViewById(R.id.category);
+        errText = (TextView) findViewById(R.id.errText);
         addButton.setOnClickListener(this);
 
         // создаем обработчик нажатия
@@ -104,6 +107,11 @@ public class CategoryActivity extends AppCompatActivity implements OnClickListen
                     Log.d(LOG_TAG, "row updated, name = " + name);
                 }
                 else {
+                    if (db.getCategoryByName(name) != null){
+                        errText.setText("*Категория с таким именем уже существует");
+                        errText.setVisibility(View.VISIBLE);
+                        return;
+                    }
                     db.addCategory(name, color);
                     Log.d(LOG_TAG, "row inserted, name = " + name);
                 }

@@ -1,5 +1,7 @@
 package com.Bogatnov.financeanalytix.Diagrams;
 
+import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -10,6 +12,7 @@ import android.text.style.StyleSpan;
 import android.util.Log;
 
 import com.Bogatnov.financeanalytix.DBActions;
+import com.Bogatnov.financeanalytix.OperationListActivity;
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
@@ -27,10 +30,14 @@ import java.util.ArrayList;
 
 public class PieDiagram implements OnChartValueSelectedListener {
     private PieChart chart;
+    Context activity;
 
     public PieDiagram(PieChart chart){ this.chart = chart;}
 
-    public void createDiagram() {
+    public void createDiagram(Context activity) {
+
+        this.activity = activity;
+
         chart.setUsePercentValues(true);
         chart.getDescription().setEnabled(false);
         chart.setExtraOffsets(5, 10, 5, 5);
@@ -52,7 +59,7 @@ public class PieDiagram implements OnChartValueSelectedListener {
         // chart.setUnit(" €");
         // chart.setDrawUnitsInChart(true);
         // add a selection listener
-        //chart.setOnChartValueSelectedListener(this);
+        chart.setOnChartValueSelectedListener(this);
         chart.animateY(1400, Easing.EaseInOutQuad);
 
         // chart.spin(2000, 0, 360);
@@ -70,14 +77,14 @@ public class PieDiagram implements OnChartValueSelectedListener {
         chart.setEntryLabelTextSize(12f);
     }
 
-    public void onShowExpences(DBActions db, String table, String StartDate, String endDate) {
+    public void onShowExpences(DBActions db, String table, String startDate, String endDate) {
 
         ArrayList<String> parties = new ArrayList<>();
         ArrayList<PieEntry> entries = new ArrayList<>();
 
         // NOTE: The order of the entries when being added to the entries array determines their position around the center of
         // the chart.
-        Cursor cursor = db.getExpensesForDiagramPie(StartDate, endDate, table);
+        Cursor cursor = db.getExpensesForDiagramPie(startDate, endDate, table);
 
         if (cursor.moveToFirst()) {
 
@@ -126,12 +133,17 @@ public class PieDiagram implements OnChartValueSelectedListener {
     }
 
     public void onValueSelected(Entry e, Highlight h) {
-
-        if (e == null)
+        PieEntry pieEntry = (PieEntry) e;
+        if (pieEntry == null)
             return;
 
+        Intent intent = new Intent(activity, OperationListActivity.class);
+        intent.putExtra("filter", String.valueOf(pieEntry.getLabel()));
+        activity.startActivity(intent);
+
+
         Log.i("VAL SELECTED",
-                "Value: " + e.getY() + ", index: " + h.getX()
+                "Value: " + pieEntry.getY() + ", index: " + h.getX()
                         + ", DataSet index: " + h.getDataSetIndex());
 
     }

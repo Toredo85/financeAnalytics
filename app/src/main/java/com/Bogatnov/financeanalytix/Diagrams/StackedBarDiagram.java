@@ -4,9 +4,6 @@ import android.database.Cursor;
 import android.graphics.Color;
 import android.util.Log;
 
-import com.Bogatnov.financeanalytix.DBActions;
-import com.Bogatnov.financeanalytix.R;
-import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.CombinedChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
@@ -24,20 +21,18 @@ import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Map;
 
 public class StackedBarDiagram  implements OnChartValueSelectedListener {
 
     private CombinedChart chart;
     private Cursor cursor;
 
-    public StackedBarDiagram(CombinedChart  chart, Cursor cursor){ this.chart = chart; this.cursor = cursor; }
+    public StackedBarDiagram(){  }
 
-    public void createDiagram() {
+    public void createDiagram(CombinedChart  chart, Cursor cursor) {
+        this.chart = chart;
+        this.cursor = cursor;
         chart.setOnChartValueSelectedListener(this);
         chart.getDescription().setEnabled(false);
         // if more than 60 entries are displayed in the chart, no values will be
@@ -61,12 +56,6 @@ public class StackedBarDiagram  implements OnChartValueSelectedListener {
         xLabels.setGranularity(1f);
         xLabels.setAxisMinimum(.5f);
         xLabels.setValueFormatter(new CategoryValueFormatter(cursor));
-        // chart.setDrawXLabels(false);
-        // chart.setDrawYLabels(false);
-
-        // setting data
-//        seekBarX.setProgress(12);
-//        seekBarY.setProgress(100);
 
         Legend l = chart.getLegend();
         l.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
@@ -76,7 +65,6 @@ public class StackedBarDiagram  implements OnChartValueSelectedListener {
         l.setFormSize(8f);
         l.setFormToTextSpace(4f);
         l.setXEntrySpace(6f);
-        // chart.setDrawLegend(false);
 
         CombinedData data = new CombinedData();
 
@@ -146,12 +134,13 @@ public class StackedBarDiagram  implements OnChartValueSelectedListener {
 
         BarDataSet set1;
 
-        if (chart.getData() != null && chart.getData().getDataSetCount() > 0) {
-            set1 = (BarDataSet) chart.getData().getDataSetByIndex(0);
-            set1.setValues(values);
-            chart.getData().notifyDataChanged();
-            chart.notifyDataSetChanged();
-        } else {
+//        if (chart.getData() != null && chart.getBarData().getDataSetCount() > 0) {
+//            set1 = (BarDataSet) chart.getBarData().getDataSetByIndex(0);
+//            set1.setValues(values);
+//            chart.getBarData().notifyDataChanged();
+//            chart.notifyDataSetChanged();
+//            return chart.getBarData();
+//        } else {
             set1 = new BarDataSet(values, "Факт");
             set1.setDrawIcons(false);
             set1.setColors(getColors());
@@ -165,8 +154,8 @@ public class StackedBarDiagram  implements OnChartValueSelectedListener {
             data.setValueTextColor(Color.WHITE);
 
             return data;
-        }
-        return new BarData();
+//        }
+        //return new BarData();
     }
 
     @Override

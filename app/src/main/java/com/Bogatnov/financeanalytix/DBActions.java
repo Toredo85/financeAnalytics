@@ -67,6 +67,23 @@ public class DBActions {
         return mDB.rawQuery(sqlQuery, null);
     }
 
+    public Cursor getAllDataOperationsByCategoryName(String table, String categoryName) {
+        String sqlQuery = "select "
+                + "CM._id as _id,"
+                + "CM.date as date, "
+                + "CM.category as categoryid, "
+                + "CM.direction as direction,"
+                + "CM.amount as amount, "
+                + "C.name as categoryname, "
+                + "C.color as color "
+                + "from " + table + " as CM "
+                + "inner join categories as C "
+                + "on CM.category = C._id "
+                + "where C.name = ? "
+                + "order by date";
+        return mDB.rawQuery(sqlQuery, new String[]{categoryName});
+    }
+
     public Cursor getAllOperationsForMonth(String table, String month) {
         String sqlQuery = "select "
                 + "CM._id as _id,"
@@ -150,6 +167,24 @@ public class DBActions {
         }
         return new Category(0,"","");
     }
+
+    // получить запись из DB_TABLE
+    public Category getCategoryByName(String name) {
+        String selection = "name = ?";
+        String[] selectionArgs = new String[] { name };
+        Cursor c = mDB.query(DB_TABLE_CATEGORIES, null, selection, selectionArgs, null, null, null);
+        if (c.moveToFirst()){
+            int categoryId = (c.getInt(c.getColumnIndex("_id")));
+            String categoryName = (c.getString(c.getColumnIndex("name")));
+            String categoryColor = (c.getString(c.getColumnIndex("color")));
+
+            return new Category(categoryId,categoryName,categoryColor);
+        }
+        else
+        return null;
+    }
+
+
 
     // получить запись из DB_TABLE
     public Operation getOperationById(long id, String table) {

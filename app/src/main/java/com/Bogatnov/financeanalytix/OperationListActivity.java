@@ -83,10 +83,23 @@ public class OperationListActivity extends AppCompatActivity implements View.OnC
         db.open();
 
         initRecyclerView();
-        loadOperations();
+
+        Intent intent = getIntent();
+        if (intent.hasExtra("filter")) {
+            String filter = intent.getStringExtra("filter");
+            loadOperationsByCategoryName(filter);
+        }
+        else {
+            loadOperations();
+        }
     }
     private void loadOperations() {
         Collection<Operation> operations = getOperations();
+        operationAdapter.setItems(operations);
+    }
+
+    private void loadOperationsByCategoryName(String categoryName) {
+        Collection<Operation> operations = getOperationsByCategoryName(categoryName);
         operationAdapter.setItems(operations);
     }
 
@@ -113,6 +126,28 @@ public class OperationListActivity extends AppCompatActivity implements View.OnC
         return operationsArray;
     }
 
+    private Collection<Operation> getOperationsByCategoryName(String categoryName) {
+        Cursor cursor = db.getAllDataOperationsByCategoryName(factTable, categoryName);
+        ArrayList operationsArray = new ArrayList<Operation>();
+        if(cursor.moveToFirst()) {
+            do {
+                int idCategory = cursor.getInt(cursor.getColumnIndex("categoryid"));
+                String name = cursor.getString(cursor.getColumnIndex("categoryname"));
+                String color = cursor.getString(cursor.getColumnIndex("color"));
+
+                Category category = new Category(idCategory, name, color);
+
+                int id = cursor.getInt(cursor.getColumnIndex("_id"));
+                String date = cursor.getString(cursor.getColumnIndex("date"));
+                String direction = cursor.getString(cursor.getColumnIndex("direction"));
+                Double amount = cursor.getDouble(cursor.getColumnIndex("amount"));
+
+                operationsArray.add(new Operation(id, date, direction, category, amount));
+
+            } while (cursor.moveToNext());
+        }
+        return operationsArray;
+    }
     @Override
     public void onClick(View view) {
 

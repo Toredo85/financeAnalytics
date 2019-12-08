@@ -1,6 +1,5 @@
 package com.Bogatnov.financeanalytix.Adapters;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -15,9 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.Bogatnov.financeanalytix.DBActions;
 import com.Bogatnov.financeanalytix.Diagrams.MyValueFormatter;
-import com.Bogatnov.financeanalytix.EnterOperationActivity;
 import com.Bogatnov.financeanalytix.Entity.Operation;
-import com.Bogatnov.financeanalytix.MenuApp;
 import com.Bogatnov.financeanalytix.R;
 
 import java.text.ParseException;
