@@ -21,15 +21,15 @@ public class CategoryActivity extends AppCompatActivity implements OnClickListen
 
     final String LOG_TAG = "myLogs";
 
-    DBActions db;
-    EditText categoryText;
-    String color = "";
-    GridView colorGrid;
-    int categoryId;
-    ArrayAdapter<String> gridColorAdapter;
-    Button previousSelectedButton;
-    Intent thisIntent;
-    TextView errText;
+    private DBActions db;
+    private EditText categoryText;
+    private String color = "";
+    private GridView colorGrid;
+    private int categoryId;
+    private ArrayAdapter<String> gridColorAdapter;
+    private Button previousSelectedButton;
+    private Intent thisIntent;
+    private TextView errText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,4 +127,7 @@ public class CategoryActivity extends AppCompatActivity implements OnClickListen
         return color;
     }
 
+    public void setPreviousSelectedButton(Button previousSelectedButton) {
+        this.previousSelectedButton = previousSelectedButton;
+    }
 }

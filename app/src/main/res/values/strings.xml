@@ -25,4 +25,5 @@
     <string name="menu_budget_operation_list">Бюджеты</string>
     <string name="year">Год</string>
     <string name="dash">-</string>
+    <string name="select"><![CDATA[<выбрать..>]]></string>
 </resources>

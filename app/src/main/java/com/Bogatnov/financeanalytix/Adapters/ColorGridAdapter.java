@@ -41,6 +41,7 @@ public class ColorGridAdapter extends BaseAdapter {
             colorButton = new Button(context);
             if (context.getSelectColor().matches(products[position])) {
                 colorButton.setText("выбран");
+                context.setPreviousSelectedButton(colorButton);
             }
             colorButton.setBackgroundColor(Color.parseColor(products[position]));
             //colorButton.setWidth(5);

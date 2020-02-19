@@ -18,9 +18,10 @@
 
         <Spinner
             android:id="@+id/spin_direction"
-            android:layout_width="200dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal" />
+            android:layout_gravity="center_horizontal"
+            android:minWidth="140dp" />
     </LinearLayout>
 
     <LinearLayout
@@ -50,20 +51,24 @@
             android:layout_height="match_parent"
             android:layout_gravity="bottom"
             android:layout_weight="1"
+            android:background="?attr/colorButtonNormal"
             android:gravity="bottom"
             android:orientation="vertical"
-            android:paddingRight="@dimen/activity_horizontal_margin">
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:paddingBottom="1dp">
 
             <TextView
                 android:id="@+id/date"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:autoText="false"
+                android:background="@android:color/background_light"
                 android:clickable="false"
                 android:gravity="left"
-                android:hint="Дата операции"
+                android:hint="@string/select"
                 android:inputType="date"
                 android:onClick="onClick"
+                android:textSize="@dimen/EditText"
                 app:autoSizeMaxTextSize="@dimen/EditText"
                 app:autoSizeMinTextSize="@dimen/min_text"
                 app:autoSizeTextType="none" />
@@ -97,18 +102,23 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:background="?attr/colorButtonNormal"
             android:gravity="bottom"
             android:orientation="vertical"
-            android:paddingRight="@dimen/activity_horizontal_margin">
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:paddingBottom="1dp">
 
             <TextView
                 android:id="@+id/category"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:autoText="false"
+                android:background="@android:color/background_light"
                 android:clickable="false"
                 android:gravity="left"
-                android:hint="Категория"
+                android:hint="@string/select"
+                android:inputType="text"
+                android:textSize="@dimen/EditText"
                 app:autoSizeMaxTextSize="@dimen/EditText"
                 app:autoSizeMinTextSize="@dimen/min_text"
                 app:autoSizeTextType="uniform" />
